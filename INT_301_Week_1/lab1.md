@@ -1,173 +1,252 @@
 
+# **Lab 1: Investigate Kali Linux**
 
-# Lab 1: Investigate Kali Linux
-
-## Objectives
+## **Objectives**
 In this lab, you will complete the following objectives:
 - Familiarize yourself with the Kali Linux GUI.
-- Familiarize yourself with the Kali Linux shell.
-- Understand basic file and directory operations.
+- Master the Kali Linux shell and its utilities.
+- Understand and perform advanced file and directory operations.
 - Learn about file permissions and how to manipulate them.
+- Practice using text processing and search tools.
 
-## Background / Scenario
-Linux is an open-source operating system known for its speed, reliability, and efficiency. It can run on minimal hardware resources and is highly customizable. Unlike proprietary systems like Windows and Mac OS X, Linux is maintained by a community of developers, making it adaptable for various applications, from embedded devices to supercomputers.
+## **Background / Scenario**
+As your skills progress, efficiency in the Linux environment becomes critical. This lab builds on foundational knowledge by introducing more complex tasks and command combinations that are daily routines for security professionals.
 
-Kali Linux is a specialized distribution designed for security auditing and penetration testing. It includes numerous tools for these tasks, but it is not intended for everyday use like gaming or general development. As a cybersecurity professional, it’s crucial to be adept at navigating both the graphical user interface (GUI) and the command line in Kali Linux.
-
-## Required Resources
+## **Required Resources**
 - Kali Linux virtual machine (VM) customized for Internship Training course.
 - Internet access.
 
-## Instructions
-
-### Part 1: Familiarize Yourself with the Kali Linux GUI
-
-#### Step 1: Start the VM and learn about the Kali GUI
-1. **Log In**: Start your Kali VM and log in with the username `kali` and the password `kali`. You should see the Kali desktop.
-2. **Explore the Desktop**:
-   - The desktop contains icons like the trash, file explorer, and application links.
-   - The top panel includes running application icons and allows you to switch between different desktops, each of which can have unique configurations.
-3. **Customize the Panel**:
-   - Right-click the panel, select `Panel`, then `+ Add New Items…` to explore options for adding frequently used items.
-   - Access `Panel Preferences…` to adjust the appearance and functionality of the panel. Experiment with the settings and then close the windows.
-4. **Access Settings**: The top-right corner displays settings and system information, including network status and power options.
-
-#### Step 2: Navigate the Applications Menu
-1. **Open the Applications Menu**: Click the first icon on the left side of the panel to access the Applications menu, similar to the Start menu in Windows.
-2. **Explore Applications**: Browse through the categories, examining the various tools available in Kali Linux, particularly those related to security.
-3. **Open a Terminal**: Close any application windows and click the square black-and-white icon in the panel to open a terminal for the next part of the lab.
-
-### Part 2: Familiarize Yourself with the Kali Linux Shell
-The shell (or terminal) is a powerful interface for interacting with the Linux operating system.
-
-#### Step 1: Command Documentation
-1. **Learn About the Man Page**:
-   - In the terminal, type:
-     ```bash
-     man man
-     ```
-   - This command displays documentation about the `man` command. Use `q` to exit the man page.
-   - **Question**: Name a few sections included in a man page?
-
-   
-
-2. **Basic Commands**:
-   The following table lists some basic Linux commands and their functions:
-
-   | Command   | Description                                                           |
-   |-----------|-----------------------------------------------------------------------|
-   | mv        | Moves or renames files and directories.                               |
-   | chmod     | Modifies file permissions.                                            |
-   | chown     | Changes the ownership of a file.                                      |
-   | dd        | Copies data from an input to an output.                              |
-   | pwd       | Displays the name of the current directory.                          |
-   | ps        | Lists the processes currently running in the system.                |
-   | su        | Simulates a login as another user or to become a superuser.         |
-   | sudo      | Runs a command as a superuser or another named user.                |
-   | grep      | Searches for specific strings of characters within a file.           |
-   | ifconfig  | Displays or configures network card information (deprecated; use `ip address`). |
-   | apt-get   | Installs, configures, and removes packages on Debian-based systems.  |
-   | iwconfig  | Displays or configures wireless network card information.            |
-   | shutdown  | Shuts down the computer or performs related tasks.                   |
-   | passwd    | Changes the password for the current user.                           |
-   | cat       | Lists the contents of a file.                                        |
-
-#### Step 2: Create and Change Directories
-In this step, you will use the `cd`, `mkdir`, and `ls` commands.
-
-1. **Print the Current Working Directory**:
-   ```bash
-   pwd
-   ```
-
-   **Question**: What is the current directory?
-   
-
-2. **Navigate to the `/home/kali` Directory**:
-   ```bash
-   cd /home/kali
-   ```
-
-3. **List Files in the Current Directory**:
-   ```bash
-   ls -l
-   ```
-
-4. **Create a New Directory**:
-   ```bash
-   mkdir Test
-   ```
-
-5. **Verify the Directory Creation**:
-   ```bash
-   ls
-   ```
-
-6. **Remove the Directory**:
-   ```bash
-   rmdir Test
-   ```
-
-7. **Verify the Directory Removal**:
-   ```bash
-   ls
-   ```
-
-### Part 3: Copying and Moving Files
-1. **Copy a File**:
-   To copy a file, use the `cp` command. For example, to copy `gvm_admin_passwd.txt` to `backup_gvm_passwd.txt`:
-   ```bash
-   cp gvm_admin_passwd.txt backup_gvm_passwd.txt
-   ```
-
-2. **Verify the Copy**:
-   ```bash
-   ls
-   ```
-
-3. **Move a File**:
-   To move `gvm_admin_passwd.txt` to the Documents directory:
-   ```bash
-   mv gvm_admin_passwd.txt Documents/
-   ```
-
-4. **Verify the Move**:
-   ```bash
-   ls Documents/
-   ```
-
-### Part 4: Deleting Files
-1. **Delete a File**:
-   To delete `backup_gvm_passwd.txt`:
-   ```bash
-   rm backup_gvm_passwd.txt
-   ```
-
-2. **Verify Deletion**:
-   ```bash
-   ls
-   ```
-
-### Part 5: Viewing File Content
-1. **View File Contents**:
-   To view the contents of a file:
-   ```bash
-   cat gvm_admin_passwd.txt
-   ```
-
-2. **Paginated Viewing**:
-   If the file is long, use `less` for paginated viewing:
-   ```bash
-   less gvm_admin_passwd.txt
-   ```
-
-## Conclusion
-Navigating the Kali Linux file system is essential for effective system management. By mastering basic commands such as `cd`, `ls`, `mkdir`, `cp`, `mv`, `rm`, and `cat`, you can efficiently manage files and directories in your environment. Understanding the GUI and the shell will enhance your ability to perform tasks in Kali Linux.
-
-## Additional Resources
-- **Kali Linux Documentation**: [Kali Linux Docs](https://www.kali.org/docs/)
-- **Linux Command Line Basics**: A comprehensive guide to Linux commands.
-- **Bash Guide for Beginners**: Detailed explanations and examples for beginners.
-
 ---
 
+## **Instructions**
+
+### **Part 1: Advanced Directory Navigation & Creation**
+
+1.  **Navigate to your home directory:**
+    ```bash
+    cd ~
+    ```
+    **Exercise 1.1:** What is the difference between `cd ~` and `cd /home/kali`?
+
+2.  **Create a complex directory structure in one command:**
+    ```bash
+    mkdir -p Lab1/{recon/{hosts,services},exploits,logs,evidence/{screenshots,packets}}
+    ```
+    **Exercise 1.2:** Use `tree` or `ls -R` to view the recursive structure you just created.
+
+3.  **Navigate through the directories:**
+    ```bash
+    cd Lab1/recon/hosts
+    pwd
+    cd ../../evidence/packets
+    pwd
+    ```
+    **Exercise 1.3:** Explain how the `../` syntax works in directory navigation.
+
+### **Part 2: Comprehensive File Operations**
+
+1.  **Create multiple practice files:**
+    ```bash
+    cd ~/Lab1
+    touch scan_results.txt passlist.txt logfile.log config.conf secret.key data.xml
+    ```
+
+2.  **Copy with verification:**
+    ```bash
+    cp scan_results.txt scan_results_backup.txt
+    cp passlist.txt ../passlist_backup.txt
+    ```
+    **Exercise 2.1:** Verify both copies were created successfully using `ls`.
+
+3.  **Move and rename files:**
+    ```bash
+    mv config.conf exploits/
+    mv logfile.log logs/application.log
+    ```
+    **Exercise 2.2:** Check that the files were moved and renamed correctly.
+
+4.  **Bulk file operations:**
+    ```bash
+    mkdir temp_files
+    touch temp_files/{1..10}.tmp
+    ```
+    **Exercise 2.3:** Delete all `.tmp` files in the `temp_files` directory with one `rm` command.
+
+### **Part 3: File Content Management**
+
+1.  **Create and view file content:**
+    ```bash
+    echo "Important findings from network scan" > scan_report.txt
+    echo "Additional notes on vulnerabilities" >> scan_report.txt
+    cat scan_report.txt
+    ```
+
+2.  **Compare file differences:**
+    ```bash
+    echo "Version 1.0" > config_old.txt
+    echo "Version 2.0" > config_new.txt
+    diff config_old.txt config_new.txt
+    ```
+    **Exercise 3.1:** What does the output of `diff` show you?
+
+3.  **Search within files:**
+    ```bash
+    echo "ERROR: Authentication failed" >> logfile.txt
+    echo "SUCCESS: User logged in" >> logfile.txt
+    echo "ERROR: Connection timeout" >> logfile.txt
+    grep "ERROR" logfile.txt
+    ```
+    **Exercise 3.2:** Use `grep -c` to count how many ERROR messages are in the file.
+
+4.  **View partial file content:**
+    ```bash
+    head -3 logfile.txt
+    tail -2 logfile.txt
+    ```
+    **Exercise 3.3:** Create a command that shows only lines 2-3 of logfile.txt using `head` and `tail`.
+
+### **Part 4: Advanced Permission Exercises**
+
+1.  **Check current permissions:**
+    ```bash
+    cd ~/Lab1
+    ls -l
+    ```
+
+2.  **Create permission test files:**
+    ```bash
+    touch secret_file.txt admin_tool.sh public_read.txt
+    ```
+
+3.  **Modify permissions using symbolic method:**
+    ```bash
+    chmod u+x admin_tool.sh
+    chmod o-r secret_file.txt
+    chmod a+w public_read.txt
+    ```
+    **Exercise 4.1:** After each command, run `ls -l` and explain what changed.
+
+4.  **Modify permissions using octal method:**
+    ```bash
+    chmod 755 admin_tool.sh
+    chmod 600 secret_file.txt
+    chmod 644 public_read.txt
+    ```
+    **Exercise 4.2:** What do each of these octal numbers (755, 600, 644) represent in terms of permissions?
+
+5.  **Change file ownership (if possible):**
+    ```bash
+    sudo chown root secret_file.txt
+    ls -l secret_file.txt
+    ```
+
+### **Part 5: Search and Find Operations**
+
+1.  **Find files by name:**
+    ```bash
+    find ~/Lab1 -name "*.txt"
+    find ~/Lab1 -name "scan*"
+    ```
+
+2.  **Find files by type:**
+    ```bash
+    find ~/Lab1 -type f
+    find ~/Lab1 -type d
+    ```
+    **Exercise 5.1:** What's the difference between the outputs?
+
+3.  **Find files by size:**
+    ```bash
+    find ~/Lab1 -size +1k
+    find ~/Lab1 -size -100c
+    ```
+
+4.  **Find and execute commands:**
+    ```bash
+    find ~/Lab1 -name "*.sh" -exec chmod +x {} \;
+    ```
+    **Exercise 5.2:** What did this command accomplish?
+
+### **Part 6: Text Processing Challenges**
+
+1.  **Sorting output:**
+    ```bash
+    echo -e "apple\norange\nbanana\napple" > fruits.txt
+    sort fruits.txt
+    sort fruits.txt | uniq
+    ```
+
+2.  **Word counting:**
+    ```bash
+    wc scan_report.txt
+    wc -l logfile.txt
+    ```
+    **Exercise 6.1:** What do the three numbers from `wc` represent?
+
+3.  **Text transformation:**
+    ```bash
+    echo "hello world" | tr 'a-z' 'A-Z'
+    echo "hello:world:test" | cut -d':' -f2
+    ```
+
+### **Part 7: Compression and Archiving**
+
+1.  **Create archives:**
+    ```bash
+    tar -czf lab1_backup.tar.gz ~/Lab1
+    tar -tzf lab1_backup.tar.gz
+    ```
+
+2.  **Extract archives:**
+    ```bash
+    mkdir extracted
+    tar -xzf lab1_backup.tar.gz -C extracted/
+    ```
+    **Exercise 7.1:** Verify the extraction was successful.
+
+### **Part 8: System Monitoring Exercises**
+
+1.  **Process monitoring:**
+    ```bash
+    ps aux
+    ps -ef | grep kali
+    ```
+
+2.  **Disk usage:**
+    ```bash
+    df -h
+    du -sh ~/Lab1
+    ```
+    **Exercise 8.1:** How much space does your Lab1 directory use?
+
+3.  **System information:**
+    ```bash
+    uname -a
+    whoami
+    ```
+
+## **Challenge Exercises**
+
+**Challenge 1:** Create a directory structure for a penetration test engagement with these requirements:
+- Main directory called "Engagement_2024"
+- Subdirectories for: reconnaissance, exploitation, reporting, evidence
+- In the evidence directory, create subfolders for: screenshots, logs, packets
+- Create a readme.txt file in each main directory
+
+**Challenge 2:** Set up the following permission scheme:
+- All `.sh` files should be executable only by the owner
+- All `.txt` files should be readable by everyone but only writable by the owner
+- Create one file that nobody can read, write, or execute
+
+**Challenge 3:** Using only command line tools:
+1. Find all `.log` files in your home directory
+2. Count how many lines contain the word "ERROR"
+3. Save the results to a file called `error_report.txt`
+
+## **Conclusion**
+You have now practiced comprehensive Linux command line operations that form the foundation of efficient security work in Kali Linux. These skills in file management, permission handling, text processing, and system navigation are essential for any cybersecurity professional.
+
+## **Additional Resources**
+- **Kali Linux Documentation**: [Kali Linux Docs](https://www.kali.org/docs/)
+- **Linux Command Library**: Comprehensive command reference
+- **GNU Coreutils Manual**: Detailed documentation on core utilities

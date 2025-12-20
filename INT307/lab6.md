@@ -47,7 +47,12 @@ In this lab, you will explore Insecure Direct Object References (IDOR) vulnerabi
    - Note the user ID displayed on the page (e.g., `user=1`).
 
 3. **Manipulate the User ID**:
-   - Change the user ID in the URL to access different users. For example, if the URL is `http://localhost/DVWA/vulnerabilities/idor/?user=1`, try changing it to `http://localhost/DVWA/vulnerabilities/idor/?user=2` or any other valid user ID.
+- Change the user ID in the URL to access different users. For example, if the URL is
+
+```bash
+http://localhost/DVWA/vulnerabilities/idor/?user=1
+```
+
 
 4. **Observe the Results**:
    - What information do you see when you change the user ID? Were you able to access information that should not be available to you?

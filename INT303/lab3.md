@@ -42,9 +42,23 @@ By the end of this lab, students will:
 
 ### **Exercise 2: Capturing and Analyzing TCP Packets**
 
-3. **Task:** Initiate a connection to the OWASP Broken Web Application VM via HTTP or SSH. Capture TCP packets related to this connection using `tcpdump` or Wireshark.
-   - Command: `tcpdump -i <interface> tcp and host <OWASP_IP>` or set a filter in Wireshark.
-   - Example: `tcpdump -i eth0 tcp and host 192.168.56.101`
+3. **Task:** Initiate a connection to the OWASP Broken Web Application VM via HTTP or SSH. Capture TCP packets related to this connection using
+
+```bash
+tcpdump
+```
+
+   - Command:
+
+```bash
+tcpdump -i <interface> tcp and host <OWASP_IP>
+```
+
+
+```bash
+tcpdump -i eth0 tcp and host 192.168.56.101
+```
+
    
 4. **Question:**
    - What happens during the TCP handshake (SYN, SYN-ACK, ACK)?
@@ -56,7 +70,13 @@ By the end of this lab, students will:
 ### **Exercise 3: Investigating IP Packets (Network Layer)**
 
 5. **Task:** Capture and analyze the IP packets from your connection to the OWASP Broken Web Application.
-   - Command: Use Wireshark or `tcpdump` with the filter `ip.addr == <OWASP_IP>` to capture IP packets.
+   - Command: Use Wireshark or
+
+```bash
+tcpdump
+ip.addr == <OWASP_IP>
+```
+
    
 6. **Question:**
    - What fields can you see in the IP packet header (e.g., Source IP, Destination IP, TTL, etc.)?
@@ -67,9 +87,22 @@ By the end of this lab, students will:
 
 ### **Exercise 4: Application Layer Analysis (HTTP/SSH Traffic)**
 
-7. **Task:** If you're using HTTP, filter the packets to capture only HTTP traffic using Wireshark or `tcpdump`. If you're using SSH, capture and analyze the encrypted traffic.
-   - Command for HTTP traffic: `tcpdump -i <interface> port 80 and host <OWASP_IP>`
-   - Command for SSH traffic: `tcpdump -i <interface> port 22 and host <OWASP_IP>`
+7. **Task:** If you're using HTTP, filter the packets to capture only HTTP traffic using Wireshark or
+
+```bash
+tcpdump
+```
+
+
+```bash
+tcpdump -i <interface> port 80 and host <OWASP_IP>
+```
+
+
+```bash
+tcpdump -i <interface> port 22 and host <OWASP_IP>
+```
+
    
 8. **Question:**
    - Analyze the HTTP packets. What information is available in the HTTP request and response?
@@ -81,7 +114,12 @@ By the end of this lab, students will:
 ### **Exercise 5: Error Handling in TCP/IP Transmission**
 
 9. **Task:** Simulate packet loss or network issues by introducing a delay or stopping the network connection momentarily. Capture how TCP/IP handles this issue.
-   - Command: Temporarily disable your network interface using `ifconfig <interface> down` and then re-enable it.
+   - Command: Temporarily disable your network interface using
+
+```bash
+ifconfig <interface> down
+```
+
    
 10. **Question:**
     - What happens when packets are dropped or delayed?
@@ -92,8 +130,20 @@ By the end of this lab, students will:
 
 ### **Exercise 6: ICMP and Ping Inspection (Network Layer)**
 
-11. **Task:** Send a series of `ping` commands to the OWASP Broken Web Application VM and capture the ICMP packets.
-    - Command: `ping <OWASP_IP>` and use Wireshark or `tcpdump` to capture ICMP packets with the filter `icmp`.
+11. **Task:** Send a series of
+
+```bash
+ping
+```
+
+    - Command:
+
+```bash
+ping <OWASP_IP>
+tcpdump
+icmp
+```
+
     
 12. **Question:**
     - What are the key fields in an ICMP packet (e.g., Type, Code, Checksum)?
@@ -105,7 +155,12 @@ By the end of this lab, students will:
 ### **Exercise 7: Analyzing UDP Packets (Transport Layer)**
 
 13. **Task:** If available, generate some UDP traffic to the OWASP VM by using a simple application or UDP-based service. Capture and analyze the UDP packets.
-    - Command: `tcpdump -i <interface> udp and host <OWASP_IP>`
+    - Command:
+
+```bash
+tcpdump -i <interface> udp and host <OWASP_IP>
+```
+
     
 14. **Question:**
     - Compare UDP with TCP. What are the major differences in packet structure and behavior?
@@ -116,11 +171,26 @@ By the end of this lab, students will:
 
 ### **Exercise 8: OS Detection via Nmap (Network and Transport Layers)**
 
-15. **Task:** Use `nmap` to perform OS detection on the OWASP Broken Web Application VM, analyzing how `nmap` identifies the operating system based on packet behavior.
-    - Command: `nmap -O <OWASP_IP>`
+15. **Task:** Use
+
+```bash
+nmap
+```
+
+    - Command:
+
+```bash
+nmap -O <OWASP_IP>
+```
+
    
 16. **Question:**
-    - How does `nmap` detect the OS based on the captured packets?
+- How does
+
+```bash
+nmap
+```
+
     - What packet characteristics (TTL, window size, etc.) help in identifying the OS?
     - Explain why OS detection can be an important step in network analysis and vulnerability assessment.
 
@@ -128,8 +198,18 @@ By the end of this lab, students will:
 
 ### **Exercise 9: Analyzing ARP Traffic (Link Layer)**
 
-17. **Task:** Use `arp-scan` or `tcpdump` to capture ARP traffic in your local network, focusing on communication with the OWASP VM.
-    - Command: `arp-scan -I <interface> <OWASP_IP>`
+17. **Task:** Use
+
+```bash
+arp-scan
+```
+
+    - Command:
+
+```bash
+arp-scan -I <interface> <OWASP_IP>
+```
+
    
 18. **Question:**
     - What information can you gather from ARP packets (e.g., MAC addresses)?

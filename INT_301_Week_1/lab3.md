@@ -1,184 +1,373 @@
+# **Lab 3: Advanced Network Analysis and Troubleshooting**
 
-# Lab 3: Networking Commands
-
-## Objectives
+## **Enhanced Objectives**
 In this lab, you will:
-- Learn how to use basic and advanced networking commands.
-- Understand how to configure network interfaces and diagnose network issues.
-- Use tools to monitor and analyze network traffic.
+- Master advanced network configuration and diagnostic commands.
+- Perform comprehensive network analysis and traffic monitoring.
+- Troubleshoot complex network issues using multiple tools.
+- Understand network protocols and their security implications.
+- Implement network security controls and monitoring.
 
-## Background / Scenario
-Networking is a fundamental aspect of cybersecurity and system administration. Familiarity with networking commands allows you to configure, manage, and troubleshoot network connections effectively. Kali Linux includes a range of powerful tools for networking, making it an essential skill for ethical hackers and security professionals.
+## **Background / Scenario**
+As a security professional, you need deep understanding of network operations beyond basic connectivity checks. This lab covers advanced network analysis, protocol examination, and troubleshooting techniques essential for penetration testing, incident response, and network defense.
 
-## Required Resources
+## **Required Resources**
 - Kali Linux virtual machine (VM).
 - Internet access.
+- Additional virtual machines or network segments (recommended).
 
-## Instructions
+---
 
-### Part 1: Displaying Network Configuration
+## **Instructions**
 
-1. **Open a Terminal**:
-   - Start your Kali Linux VM.
-   - Open a terminal by clicking the terminal icon.
+### **Part 1: Comprehensive Network Discovery**
 
-2. **Check Network Interfaces**:
-   - Use the following command to display the current network interfaces and their configuration:
-   ```bash
-   ip addr show
-   ```
-   - **Explanation**: The `ip addr show` command provides detailed information about all network interfaces, including IP addresses, MAC addresses, and status.
+#### **Step 1: Advanced Interface Analysis**
+```bash
+# Display all network interfaces with detailed information
+ip addr show
+ip link show
+ip -s link show eth0
 
-   - **Example Output**:
-     ```
-     2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
-         link/ether 08:00:27:12:34:56 brd ff:ff:ff:ff:ff:ff
-         inet 192.168.1.10/24 brd 192.168.1.255 scope global eth0
-         valid_lft forever preferred_lft forever
-     ```
+# Show network statistics
+ss -tuln
+netstat -i
+cat /proc/net/dev
+```
 
-3. **List Routing Table**:
-   - To view the routing table, run:
-   ```bash
-   ip route show
-   ```
-   - **Explanation**: This command displays the routing table, which contains information on how packets are routed through the network.
+**Exercise 1.1:** What is the difference between `ss` and `netstat`? Which provides more detailed information?
 
-   - **Example Output**:
-     ```
-     default via 192.168.1.1 dev eth0
-     192.168.1.0/24 dev eth0 proto kernel scope link src 192.168.1.10
-     ```
+#### **Step 2: Network Configuration Management**
+```bash
+# Create a virtual interface for testing
+sudo ip link add veth0 type veth peer name veth1
+sudo ip addr add 10.0.1.1/24 dev veth0
+sudo ip addr add 10.0.1.2/24 dev veth1
+sudo ip link set veth0 up
+sudo ip link set veth1 up
 
-### Part 2: Testing Network Connectivity
+# Verify the configuration
+ip addr show veth0
+ip addr show veth1
+```
 
-1. **Ping a Host**:
-   - Use the `ping` command to test connectivity to a remote host, such as Google:
-   ```bash
-   ping -c 4 google.com
-   ```
-   - **Explanation**: The `-c 4` option sends 4 packets. The `ping` command checks if the host is reachable and measures the round-trip time for messages sent.
+**Exercise 1.2:** Test connectivity between the virtual interfaces using `ping`.
 
-   - **Example Output**:
-     ```
-     PING google.com (172.217.5.110) 56(84) bytes of data.
-     64 bytes from lhr25s10-in-f14.1e100.net: icmp_seq=1 ttl=118 time=10.4 ms
-     ...
-     ```
+#### **Step 3: Advanced Routing Analysis**
+```bash
+# Display detailed routing information
+ip route show table all
+ip rule show
 
-2. **Trace Route to a Host**:
-   - Use the `traceroute` command to see the path packets take to a destination:
-   ```bash
-   traceroute google.com
-   ```
-   - **Explanation**: `traceroute` shows the sequence of hops between your machine and the destination, helping diagnose where delays or failures occur.
+# Add a custom routing table
+echo "200 custom" | sudo tee -a /etc/iproute2/rt_tables
+sudo ip route add 192.168.100.0/24 dev eth0 table custom
+sudo ip rule add from 192.168.1.100 table custom
+```
 
-   - **Example Output**:
-     ```
-     traceroute to google.com (172.217.5.110), 30 hops max, 60 byte packets
-      1  router.local (192.168.1.1)  1.234 ms  1.012 ms  1.003 ms
-      2  10.0.0.1 (10.0.0.1)  10.234 ms  10.012 ms  10.003 ms
-      ...
-     ```
+### **Part 2: Advanced Connectivity Testing**
 
-### Part 3: Configuring Network Interfaces
+#### **Step 1: Comprehensive Ping Techniques**
+```bash
+# Ping with specific interface
+ping -I eth0 google.com
 
-1. **View Current Interface Configuration**:
-   - Use the following command to see the current settings for your network interfaces:
-   ```bash
-   ifconfig
-   ```
-   - **Explanation**: The `ifconfig` command displays the configuration of all active network interfaces.
+# Ping with specific TTL
+ping -t 10 google.com
 
-   - **Example Output**:
-     ```
-     eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
-             inet 192.168.1.10  netmask 255.255.255.0  broadcast 192.168.1.255
-             ...
-     ```
+# Flood ping for stress testing
+ping -f -c 1000 localhost
 
-2. **Manually Configure an Interface**:
-   - To assign a static IP address to an interface (for example, `eth0`), use:
-   ```bash
-   sudo ip addr add 192.168.1.20/24 dev eth0
-   ```
-   - **Explanation**: This command assigns the IP address `192.168.1.20` with a subnet mask of `255.255.255.0` to the interface `eth0`.
+# IPv6 testing
+ping6 -c 4 ipv6.google.com
+```
 
-3. **Bring the Interface Up**:
-   - Activate the configured interface with:
+**Exercise 2.1:** What happens when you use flood ping, and why is it useful for network testing?
+
+#### **Step 2: Advanced Traceroute Methods**
+```bash
+# Traceroute with different protocols
+traceroute -T google.com
+traceroute -U google.com
+traceroute -I google.com
+
+# Traceroute with specific port
+traceroute -T -p 443 google.com
+
+# MTR - combination of ping and traceroute
+sudo apt install mtr
+mtr google.com
+```
+
+#### **Step 3: Path Analysis and MTU Discovery**
+```bash
+# Find maximum MTU to a host
+ping -M do -s 1500 -c 1 google.com
+ping -M do -s 1472 -c 1 google.com
+
+# Tracepath for MTU discovery
+tracepath google.com
+```
+
+### **Part 3: Network Service Analysis**
+
+#### **Step 1: Port and Service Scanning**
+```bash
+# Comprehensive port scanning with netcat
+nc -zv google.com 80
+nc -zv google.com 22
+
+# Multiple port scanning
+nc -zv google.com 20-80
+
+# Service version detection
+nc -v google.com 80
+```
+
+#### **Step 2: Banner Grabbing and Service Identification**
+```bash
+# HTTP banner grabbing
+echo "HEAD / HTTP/1.0\r\n\r\n" | nc google.com 80
+
+# SSH version detection
+nc google.com 22
+
+# SMTP banner
+nc gmail-smtp-in.l.google.com 25
+```
+
+**Exercise 3.1:** What information can you gather from service banners that might be useful for security assessment?
+
+### **Part 4: Advanced Traffic Analysis**
+
+#### **Step 1: Comprehensive Packet Capture**
+```bash
+# Capture on specific interface with verbose output
+sudo tcpdump -i eth0 -vvv
+
+# Capture and display in HEX and ASCII
+sudo tcpdump -i eth0 -XX
+
+# Capture specific protocol
+sudo tcpdump -i eth0 tcp
+sudo tcpdump -i eth0 udp
+sudo tcpdump -i eth0 icmp
+
+# Capture to file for later analysis
+sudo tcpdump -i eth0 -w capture.pcap
+```
+
+#### **Step 2: Advanced tcpdump Filters**
+```bash
+# Capture specific host
+sudo tcpdump -i eth0 host 8.8.8.8
+
+# Capture specific port
+sudo tcpdump -i eth0 port 80
+
+# Capture traffic between specific hosts
+sudo tcpdump -i eth0 host 192.168.1.10 and host 192.168.1.20
+
+# Capture all HTTP traffic
+sudo tcpdump -i eth0 -A tcp port 80
+```
+
+**Exercise 4.1:** Create a tcpdump filter to capture only DNS queries and responses.
+
+#### **Step 3: Real-time Traffic Analysis**
+```bash
+# Monitor bandwidth usage by interface
+iftop -i eth0
+
+# Monitor connections in real-time
+nethogs
+
+# Comprehensive network monitoring
+sudo apt install bmon
+bmon
+```
+
+### **Part 5: DNS and Name Resolution**
+
+#### **Step 1: DNS Analysis Tools**
+```bash
+# Basic DNS lookup
+nslookup google.com
+dig google.com
+
+# Reverse DNS lookup
+dig -x 8.8.8.8
+
+# Query specific DNS server
+dig @8.8.8.8 google.com
+
+# Comprehensive DNS information
+dig google.com ANY
+```
+
+#### **Step 2: DNS Troubleshooting**
+```bash
+# Trace DNS resolution path
+dig +trace google.com
+
+# Check DNS response times
+dig google.com | grep "Query time"
+
+# Test DNS over TCP
+dig +tcp google.com
+```
+
+**Exercise 5.1:** Compare the response times between your local DNS resolver and Google's public DNS (8.8.8.8).
+
+### **Part 6: Network Security Analysis**
+
+#### **Step 1: Firewall and Security Assessment**
+```bash
+# Check iptables rules
+sudo iptables -L -v -n
+
+# Check for listening services
+sudo netstat -tulpn
+sudo ss -tulpn
+
+# Monitor connection attempts
+sudo tcpdump -i eth0 'tcp[tcpflags] & (tcp-syn) != 0'
+```
+
+#### **Step 2: ARP Analysis and Spoofing Detection**
+```bash
+# View ARP table
+arp -a
+ip neighbor show
+
+# Monitor ARP traffic
+sudo tcpdump -i eth0 -n arp
+
+# Detect ARP spoofing
+sudo arpwatch -i eth0
+```
+
+### **Part 7: Performance and Load Testing**
+
+#### **Step 1: Bandwidth Testing**
+```bash
+# Install network testing tools
+sudo apt install iperf3 speedtest-cli
+
+# Test download speed
+speedtest-cli
+
+# Set up iperf3 server (on another machine)
+iperf3 -s
+
+# Test bandwidth to server
+iperf3 -c server_ip
+```
+
+#### **Step 2: Network Stress Testing**
+```bash
+# Generate network load
+sudo apt install stress-ng
+stress-ng --udp 4 --udp-port 5000 --timeout 60s
+
+# Monitor during stress test
+iftop -i eth0
+```
+
+### **Part 8: Wireless Network Analysis**
+
+#### **Step 1: Wireless Interface Management**
+```bash
+# Check wireless capabilities
+sudo iw list
+
+# Scan for wireless networks
+sudo iw dev wlan0 scan | grep SSID
+
+# Monitor mode setup
+sudo ip link set wlan0 down
+sudo iw dev wlan0 set type monitor
+sudo ip link set wlan0 up
+```
+
+## **Challenge Exercises**
+
+**Challenge 1: Network Mapping**
+- Create a complete map of your local network
+- Identify all active hosts and their open ports
+- Document services running on each host
+- Time limit: 30 minutes
+
+**Challenge 2: Traffic Analysis**
+- Capture 5 minutes of network traffic
+- Identify the top 5 protocols in use
+- Find any plaintext credentials transmitted
+- Generate a traffic analysis report
+
+**Challenge 3: DNS Investigation**
+- Map the DNS infrastructure of a large organization
+- Identify all authoritative name servers
+- Check for DNS security misconfigurations
+- Document your findings
+
+**Challenge 4: Network Troubleshooting Scenario**
+```bash
+# Simulate a network issue
+sudo iptables -A OUTPUT -p tcp --dport 80 -j DROP
+
+# Troubleshoot and identify the problem
+# Document your troubleshooting methodology
+```
+
+## **Advanced Tools Installation**
+
+```bash
+# Install comprehensive networking toolkit
+sudo apt install \
+    wireshark \
+    tshark \
+    nmap \
+    hping3 \
+    dnsutils \
+    net-tools \
+    tcpdump \
+    iperf3 \
+    iftop \
+    nethogs \
+    mtr \
+    arp-scan \
+    ettercap-text-only \
+    dsniff
+```
+
+## **Troubleshooting Common Network Issues**
+
+1. **Interface Won't Come Up**
    ```bash
    sudo ip link set eth0 up
+   sudo dhclient eth0
+   journalctl -u NetworkManager
    ```
-   - **Explanation**: This command enables the specified interface, making it active.
 
-### Part 4: Monitoring Network Traffic
-
-1. **Install `tcpdump`**:
-   - Use the following command to install `tcpdump`, a powerful packet analysis tool:
+2. **DNS Resolution Problems**
    ```bash
-   sudo apt install tcpdump
+   systemctl status systemd-resolved
+   cat /etc/resolv.conf
+   dig @1.1.1.1 google.com
    ```
-   - **Explanation**: This command installs `tcpdump`, allowing you to capture and analyze network traffic.
 
-   - **Example Output**:
-     ```
-     The following NEW packages will be installed:
-       tcpdump
-     ...
-     ```
-
-2. **Capture Network Traffic**:
-   - Use `tcpdump` to capture packets on `eth0`:
+3. **Routing Issues**
    ```bash
-   sudo tcpdump -i eth0 -c 10
+   ip route get 8.8.8.8
+   traceroute 8.8.8.8
+   ping -R 8.8.8.8
    ```
-   - **Explanation**: The `-i` option specifies the interface, and `-c 10` limits the capture to 10 packets.
 
-   - **Example Output**:
-     ```
-     10:30:01.123456 IP 192.168.1.10 > 192.168.1.1: ICMP echo request, id 1234, seq 1, length 64
-     10:30:01.123457 IP 192.168.1.1 > 192.168.1.10: ICMP echo reply, id 1234, seq 1, length 64
-     ...
-     ```
+## **Conclusion**
+You have now mastered advanced network analysis and troubleshooting techniques essential for security professionals. These skills enable you to conduct thorough network assessments, identify security issues, and maintain robust network infrastructure.
 
-3. **Analyze Network Traffic**:
-   - To see live traffic, run:
-   ```bash
-   sudo tcpdump -i eth0
-   ```
-   - **Explanation**: This command captures and displays all traffic on `eth0` in real-time. Use `Ctrl + C` to stop the capture.
-
-### Part 5: Final Review
-
-1. **Check Network Status**:
-   - Use the following command to see the status of all interfaces:
-   ```bash
-   nmcli device status
-   ```
-   - **Explanation**: This command provides a summary of all network interfaces, showing their connection status.
-
-   - **Example Output**:
-     ```
-     DEVICE  TYPE      STATE        CONNECTION
-     eth0    ethernet  connected    Wired connection 1
-     wlan0   wifi      disconnected  --
-     ```
-
-2. **Check Firewall Status**:
-   - Check if the firewall is active and what rules are in place:
-   ```bash
-   sudo ufw status verbose
-   ```
-   - **Explanation**: This command shows the status of the Uncomplicated Firewall (UFW) and its rules.
-
-   - **Example Output**:
-     ```
-     Status: active
-     To                         Action      From
-     --                         ------      ----
-     22/tcp                     ALLOW       Anywhere
-     ```
-
-### Conclusion
-In this lab, you have learned essential networking commands and tools available in Kali Linux. Mastery of these commands allows you to effectively manage and troubleshoot network connections, which is crucial in cybersecurity roles.
-
+## **Additional Resources**
+- **Wireshark Documentation**: https://www.wireshark.org/docs/
+- **tcpdump Manual**: https://www.tcpdump.org/manpages/tcpdump.1.html
+- **Nmap Network Scanning**: https://nmap.org/book/
+- **Linux Network Administrator's Guide**: https://tldp.org/LDP/nag2/index.html

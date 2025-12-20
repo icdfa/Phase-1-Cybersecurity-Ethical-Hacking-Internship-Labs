@@ -44,7 +44,12 @@ This lab aims to provide students with a comprehensive understanding of disk ima
    - Use a Linux distribution (e.g., Ubuntu) and connect your USB flash drive.
 
 2. **Create a Disk Image:**
-   - **Step 1:** Identify the USB drive using the `lsblk` command.
+- **Step 1:** Identify the USB drive using the
+
+```bash
+lsblk
+```
+
    - **Step 2:** Use the `dd` command to create a disk image. Replace `/dev/sdX` with the correct identifier for your USB drive.
      ```bash
      sudo dd if=/dev/sdX of=~/usb_image.img bs=4M status=progress
@@ -59,7 +64,12 @@ This lab aims to provide students with a comprehensive understanding of disk ima
 
 1. **Network Imaging:**
    - Discuss the concept of acquiring disk images over a network.
-   - **Note:** In this lab, students will not perform network acquisition, but will learn about tools like `FTK Imager` and `dd` used in conjunction with network protocols (e.g., FTP, SCP) for remote imaging.
+- **Note:** In this lab, students will not perform network acquisition, but will learn about tools like
+
+```bash
+FTK Imager
+```
+
    - **Deliverable:** Write a short paragraph (100 words) on the advantages and challenges of acquiring disk images via network methods.
 
 ---
@@ -77,7 +87,12 @@ This lab aims to provide students with a comprehensive understanding of disk ima
 - Submit a PDF file containing:
   - Your definition of a disk image.
   - Screenshots from the FTK Imager acquisition process.
-  - Documentation and screenshots from the `dd` command process.
+- Documentation and screenshots from the
+
+```bash
+dd
+```
+
   - Summary of network imaging methods.
   - Your forensic research plan for the USB flash drive.
 

@@ -40,7 +40,12 @@ By the end of this lab, you will be able to:
    - Use Wireshark to open the captured traffic file.
    - Apply filters to focus on traffic patterns during the incident. Key filters to consider:
      - `ip.addr == <suspected IP>` to focus on a suspected source.
-     - `tcp.port == <port number>` to analyze specific application traffic.
+-
+
+```bash
+tcp.port == <port number>
+```
+
 
 **Exercise 1**:  
 - Describe the overall network traffic during the incident. Are there any noticeable spikes or anomalies? What potential indicators of compromise did you identify? __________

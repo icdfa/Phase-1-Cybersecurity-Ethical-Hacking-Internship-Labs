@@ -50,7 +50,12 @@ This lab aims to familiarize students with the differences between Autopsy and T
 ### **Part 3: Demonstrating Recovery Tools**
 
 1. **Recovering Deleted Files:**
-   - Demonstrate the recovery of all deleted files using three different tools introduced in class (e.g., `fls`, `icat`, and `tsk_recover`).
+- Demonstrate the recovery of all deleted files using three different tools introduced in class (e.g.,
+
+```bash
+fls
+```
+
    - **Deliverable:** For each tool, provide:
      - The command used.
      - The inputs required (e.g., URL or custom inputs).

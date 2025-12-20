@@ -72,7 +72,12 @@ In this lab, you will delve into the foundational concepts of web technologies, 
    - With the Network tab open, refresh your page to monitor the network requests being made.
 
 3. **Inspect HTTP Requests**:
-   - Click on the first request for `index.html` and observe the following details:
+- Click on the first request for
+
+```bash
+index.html
+```
+
      - **Request URL**: The address of the resource.
      - **Request Method**: Understand different methods (GET, POST, etc.).
      - **Response Status Code**: What does a status code of `200 OK` mean?

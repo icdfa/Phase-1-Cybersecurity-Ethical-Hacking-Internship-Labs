@@ -3,6 +3,17 @@
 
 ---
 
+#### **Objectives**
+
+By the end of this lab, students will be able to:
+- Understand the fundamental concepts of substitution ciphers
+- Implement the Caesar cipher encryption and decryption algorithms
+- Analyze the security weaknesses of classical ciphers
+- Apply cryptanalysis techniques to break Caesar cipher encrypted messages
+- Recognize the historical significance and limitations of the Caesar cipher
+
+---
+
 #### **Overview**
 The **Caesar cipher** is a simple yet powerful encryption technique classified as a substitution cipher. In this method, each letter in the plaintext is replaced by another letter a fixed number of positions down the alphabet. This lab will explore the workings of the Caesar cipher, its applications, and various exercises to solidify your understanding.
 

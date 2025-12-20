@@ -41,12 +41,27 @@ By the end of this lab, students will:
      2. Ensure that your machine routes traffic correctly through the simulated network.
 
    - **Commands:**
-     - `sudo ip route add <destination_network> via <gateway_IP> dev <interface>`  
+     -
+
+```bash
+sudo ip route add <destination_network> via <gateway_IP> dev <interface>
+```
+
        Example: `sudo ip route add 192.168.4.0/24 via 192.168.1.1 dev eth0`
-     - `ip route show` – Verify your routing table.
+     -
+
+```bash
+ip route show
+```
+
 
    - **Verification Command:**
-     - `ping <OWASP_IP>` – Ensure that the Linux machine can reach the OWASP Broken Web Application VM.
+     -
+
+```bash
+ping <OWASP_IP>
+```
+
 
 2. **Question:**
    - How does static routing work on a Linux system?
@@ -65,14 +80,54 @@ By the end of this lab, students will:
      4. Test communication between namespaces and the OWASP Broken Web Application VM.
 
    - **Commands:**
-     - `sudo ip netns add vlan1` – Create a network namespace for VLAN 1.
-     - `sudo ip netns add vlan2` – Create a network namespace for VLAN 2.
-     - `sudo ip link add veth1 type veth peer name veth2` – Create virtual network interfaces.
-     - `sudo ip link set veth1 netns vlan1` – Assign `veth1` to `vlan1`.
-     - `sudo ip link set veth2 netns vlan2` – Assign `veth2` to `vlan2`.
-     - `sudo ip netns exec vlan1 ip link set lo up` – Enable loopback interface in the namespace.
-     - `sudo ip netns exec vlan1 ip addr add 192.168.10.1/24 dev veth1` – Assign IP.
-     - `sudo ip netns exec vlan1 ping <OWASP_IP>` – Test communication.
+     -
+
+```bash
+sudo ip netns add vlan1
+```
+
+     -
+
+```bash
+sudo ip netns add vlan2
+```
+
+     -
+
+```bash
+sudo ip link add veth1 type veth peer name veth2
+```
+
+     -
+
+```bash
+sudo ip link set veth1 netns vlan1
+```
+
+     -
+
+```bash
+sudo ip link set veth2 netns vlan2
+```
+
+     -
+
+```bash
+sudo ip netns exec vlan1 ip link set lo up
+```
+
+     -
+
+```bash
+sudo ip netns exec vlan1 ip addr add 192.168.10.1/24 dev veth1
+```
+
+     -
+
+```bash
+sudo ip netns exec vlan1 ping <OWASP_IP>
+```
+
 
 4. **Question:**
    - How do network namespaces simulate VLANs in Linux?
@@ -90,8 +145,18 @@ By the end of this lab, students will:
      3. Configure static routes to enable communication between the subnets.
 
    - **Commands:**
-     - `ip addr add <subnet_IP> dev <interface>` – Assign IP addresses.
-     - `ip route add <subnet>` – Add static routes.
+     -
+
+```bash
+ip addr add <subnet_IP> dev <interface>
+```
+
+     -
+
+```bash
+ip route add <subnet>
+```
+
 
 6. **Question:**
    - How does subnetting work in Linux environments?
@@ -104,8 +169,18 @@ By the end of this lab, students will:
 7. **Task:** Use `ping` and `traceroute` to test connectivity between the Linux machine, network namespaces, and the OWASP Broken Web Application VM. Analyze the routing path.
 
    - **Commands:**
-     - `ping <OWASP_IP>` – Check connectivity.
-     - `traceroute <OWASP_IP>` – Trace the packet path.
+     -
+
+```bash
+ping <OWASP_IP>
+```
+
+     -
+
+```bash
+traceroute <OWASP_IP>
+```
+
 
 8. **Question:**
    - What can `traceroute` reveal about network issues?
@@ -123,9 +198,24 @@ By the end of this lab, students will:
      3. Test the firewall by pinging the OWASP VM and other devices.
 
    - **Commands:**
-     - `echo 1 > /proc/sys/net/ipv4/ip_forward` – Enable IP forwarding.
-     - `sudo iptables -A FORWARD -s 192.168.10.0/24 -d 192.168.20.0/24 -j ACCEPT` – Allow forwarding.
-     - `sudo iptables -A FORWARD -s 192.168.10.0/24 -d <OWASP_IP> -j DROP` – Block traffic to OWASP VM.
+     -
+
+```bash
+echo 1 > /proc/sys/net/ipv4/ip_forward
+```
+
+     -
+
+```bash
+sudo iptables -A FORWARD -s 192.168.10.0/24 -d 192.168.20.0/24 -j ACCEPT
+```
+
+     -
+
+```bash
+sudo iptables -A FORWARD -s 192.168.10.0/24 -d <OWASP_IP> -j DROP
+```
+
 
 10. **Question:**
     - How can `iptables` be used to simulate routing and firewall functionality?
@@ -138,9 +228,24 @@ By the end of this lab, students will:
 11. **Task:** Use `tcpdump` to monitor traffic between your Linux namespaces and the OWASP VM. Capture and analyze packets to understand traffic flow.
 
    - **Commands:**
-     - `sudo tcpdump -i <interface>` – Capture traffic on a specific interface.
-     - `sudo tcpdump -i veth1` – Monitor traffic on the virtual network interface.
-     - `sudo tcpdump -i eth0 src <OWASP_IP>` – Monitor traffic to/from OWASP VM.
+     -
+
+```bash
+sudo tcpdump -i <interface>
+```
+
+     -
+
+```bash
+sudo tcpdump -i veth1
+```
+
+     -
+
+```bash
+sudo tcpdump -i eth0 src <OWASP_IP>
+```
+
 
 12. **Question:**
     - How can `tcpdump` be used to diagnose network issues?

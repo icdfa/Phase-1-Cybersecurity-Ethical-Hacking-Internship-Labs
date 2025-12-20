@@ -51,7 +51,12 @@ Here’s Lab 3 for **INT304: Network Security and Protocols**:
 
 6. **Verification and Testing**
    - After configuring the protocols, perform the following tests:
-     - Verify HTTPS using tools like `curl` or browser security indicators.
+- Verify HTTPS using tools like
+
+```bash
+curl
+```
+
      - Check IPsec VPN connections using ping and traceroute.
      - Validate SSH access and configuration settings.
      - Test network access with and without 802.1X authentication.

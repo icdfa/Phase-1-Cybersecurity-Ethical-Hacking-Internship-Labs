@@ -20,7 +20,12 @@ This lab will introduce you to essential concepts in digital forensics, includin
    - **Hint:** Use the positional value method to calculate the decimal equivalent of the binary number.
    
    **Question:**  
-   Explain the step-by-step process of converting a binary number to decimal. Provide another binary number (`11011011`) as an example for practice.
+Explain the step-by-step process of converting a binary number to decimal. Provide another binary number (
+
+```bash
+11011011
+```
+
 
 2. **Hexadecimal Conversions:**
    - Convert the hexadecimal number `0xABCD` to its decimal equivalent.
@@ -98,7 +103,12 @@ This lab will introduce you to essential concepts in digital forensics, includin
 ### **Part 5: Computer Forensics and System Verification**
 
 1. **System Verification Using Linux Commands:**
-   - Use Linux commands (`lscpu`, `df`, `free`, etc.) to verify the specifications of your computer system, including CPU details, memory, and storage.
+- Use Linux commands (
+
+```bash
+lscpu
+```
+
    
    **Task:**  
    Document the verification process step-by-step, detailing the commands used and the output observed. Include screenshots if possible.

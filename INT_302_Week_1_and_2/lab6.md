@@ -41,7 +41,11 @@ By the end of this lab, you will be able to:
 - Describe the purpose of the SYN and ACK flags in the TCP handshake. How do these flags indicate the status of a connection? __________
 
 2. **HTTP Analysis**:
-   - Filter the captured traffic to show only HTTP packets using the filter: `http`.
+
+```bash
+http
+```
+
    - Examine the headers of an HTTP request and response.
 
 **Key Headers to Focus On**:
@@ -53,7 +57,11 @@ By the end of this lab, you will be able to:
 - Choose an HTTP packet and summarize its request method, status code, and any notable headers. What can you infer about the transaction? __________
 
 3. **DNS Analysis**:
-   - Capture DNS queries by using the filter: `dns`.
+
+```bash
+dns
+```
+
    - Examine the DNS response packets to see the resolved IP addresses for the queried domains.
 
 **Exercise 3**:  
@@ -97,7 +105,12 @@ By the end of this lab, you will be able to:
 
 2. **Security Protocols**:
    - Examine traffic from secure protocols (HTTPS) and identify how encryption affects packet analysis.
-   - Use the `ssl` filter to analyze SSL/TLS handshake packets.
+- Use the
+
+```bash
+ssl
+```
+
 
 **Exercise 7**:  
 - Capture HTTPS traffic and identify the initial handshake packets. What information is exchanged during this handshake, and how does it contribute to security? __________

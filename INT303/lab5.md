@@ -27,7 +27,12 @@ Upon completing this lab, you will:
 ### **Step 1: Select 10 Websites**
 1. Choose **10 popular websites** (e.g., `apple.com`, `twitter.com`, etc.) to analyze.
 
-2. **Bonus Exercise:** Include a variety of domains, such as `.com`, `.org`, `.edu`, and country-specific domains (e.g., `.co.uk`, `.de`). Reflect on the differences in the IP address ranges assigned to these domains.
+2. **Bonus Exercise:** Include a variety of domains, such as
+
+```bash
+.com
+```
+
 
 ---
 
@@ -61,13 +66,33 @@ Upon completing this lab, you will:
 5. For each IP class, calculate how many devices the network can accommodate. This will give you an understanding of network size and scalability.
 
    - **Device Capacity Formula:**
-     - **Class A:** `2^24` – 2
-     - **Class B:** `2^16` – 2
-     - **Class C:** `2^8` – 2
+- **Class A:**
+
+```bash
+2^24
+```
+
+- **Class B:**
+
+```bash
+2^16
+```
+
+- **Class C:**
+
+```bash
+2^8
+```
+
 
    - **Bonus Exercise:**
      - Calculate the actual number of usable hosts by performing subnetting on these networks. For instance, consider subdividing a Class B network into smaller subnets and calculate the device capacity for each subnet.
-     - Consider subnet masks like `/26` or `/28` for Class C networks and explore how they impact the number of devices.
+- Consider subnet masks like
+
+```bash
+/26
+```
+
 
 ---
 
@@ -131,6 +156,11 @@ This lab provides a comprehensive understanding of IP address analysis, subnetti
 #### **Additional Exercises for Further Practice:**
 - **Subnetting Challenge:** For each IP address you pinged, create multiple subnets and calculate the network address, first usable IP, last usable IP, and broadcast address.
 - **IP Address Conflict Detection:** Simulate a scenario where IP address conflicts occur within a network and outline troubleshooting steps.
-- **Ping Flood Analysis:** Use tools like `hping3` to simulate a flood of ICMP requests and analyze the impact on a network using tools like Wireshark.
+- **Ping Flood Analysis:** Use tools like
+
+```bash
+hping3
+```
+
 
 ---

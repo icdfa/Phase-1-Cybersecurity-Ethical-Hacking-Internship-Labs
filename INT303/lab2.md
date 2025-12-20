@@ -32,7 +32,20 @@ By the end of this lab, students will:
 ### **Exercise 1: Viewing and Configuring Network Interfaces**
 
 1. **Task:** View your network interfaces using the `ifconfig` or `ip` command.
-   - Command: `ifconfig` or `ip addr show`
+
+```bash
+# View network interfaces (older method)
+ifconfig
+
+# View network interfaces (modern method)
+ip addr show
+
+# Show only active interfaces
+ip link show
+
+# Show interface statistics
+ip -s link
+```
    
 2. **Question:**
    - What network interfaces are available on your system?
@@ -44,7 +57,23 @@ By the end of this lab, students will:
 ### **Exercise 2: Capturing Packets on a Specific Interface**
 
 3. **Task:** Use `tcpdump` or `tshark` to capture packets on your primary network interface.
-   - Command: `tcpdump -i <interface>` (e.g., `tcpdump -i eth0`) or `tshark -i <interface>`
+
+```bash
+# Capture packets on specific interface
+sudo tcpdump -i <interface>
+
+# Example: capture on eth0
+sudo tcpdump -i eth0
+
+# Capture and save to file
+sudo tcpdump -i eth0 -w capture.pcap
+
+# Alternative: use tshark
+sudo tshark -i <interface>
+
+# Capture only first 100 packets
+sudo tcpdump -i eth0 -c 100
+```
    
 4. **Question:**
    - What kind of packets are being captured?
@@ -56,7 +85,23 @@ By the end of this lab, students will:
 ### **Exercise 3: Examining Network Statistics**
 
 5. **Task:** Use the `netstat` or `ss` command to view current network statistics and connections.
-   - Command: `netstat -i` or `ss -s`
+
+```bash
+# View network interface statistics
+netstat -i
+
+# Modern alternative: socket statistics
+ss -s
+
+# Show all network connections
+netstat -an
+
+# Show listening ports
+ss -tuln
+
+# Show established connections
+netstat -tn
+```
    
 6. **Question:**
    - What is the current status of your network interfaces?
@@ -68,7 +113,25 @@ By the end of this lab, students will:
 ### **Exercise 4: Monitoring Network Traffic with Wireshark**
 
 7. **Task:** Use Wireshark to monitor network traffic on your primary interface and filter traffic going to and from the OWASP Broken Web Application VM.
-   - Command: Open Wireshark, choose your network interface, and set the filter to `ip.addr == <OWASP_IP>` (replace `<OWASP_IP>` with the actual IP, e.g., `192.168.56.101`)
+
+```bash
+# Launch Wireshark
+wireshark
+
+# Or use tshark with display filter
+sudo tshark -i eth0 -Y "ip.addr == 192.168.56.101"
+
+# Capture and filter for specific IP
+sudo tshark -i eth0 -f "host 192.168.56.101"
+
+# Save filtered capture
+sudo tshark -i eth0 -Y "ip.addr == 192.168.56.101" -w filtered_capture.pcap
+```
+
+**Wireshark Display Filters:**
+- `ip.addr == <OWASP_IP>` - Filter for specific IP
+- `tcp.port == 80` - Filter for HTTP traffic
+- `tcp.port == 443` - Filter for HTTPS traffic
    
 8. **Question:**
    - Analyze the packets going to and from the OWASP VM. What types of protocols are in use?

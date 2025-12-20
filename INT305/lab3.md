@@ -9,15 +9,33 @@
 
 1. **Find the `adduser.conf` File**:
     
-    - The `adduser.conf` file is usually located in `/etc`. Verify its location:
+- The
+
+```bash
+adduser.conf
+```
+
     
-        `ls /etc/adduser.conf`
+
+```bash
+ls /etc/adduser.conf
+```
+
         
 2. **Open the File for Review**:
     
-    - Use a text editor (e.g., `nano` or `vim`) to open the file:
+- Use a text editor (e.g.,
+
+```bash
+nano
+```
+
     
-        `sudo nano /etc/adduser.conf`
+
+```bash
+sudo nano /etc/adduser.conf
+```
+
         
     - Read through the default configuration settings for user creation.
 
@@ -34,7 +52,12 @@
     - Identify the parameter `DHOME=/home`, specifying where new users' home directories will be created.
 3. **Skel Directory**:
     
-    - Locate `SKEL=/etc/skel`, which contains default files copied to a new user's home directory.
+- Locate
+
+```bash
+SKEL=/etc/skel
+```
+
 4. **Default Shell**:
     
     - Check the parameter `DSHELL=/bin/`, which defines the default login shell for new users.
@@ -66,7 +89,11 @@
     
     - Create a custom file in `/etc/skel`:
         
-        `echo "Welcome to your new account!" | sudo tee /etc/skel/welcome.txt`
+
+```bash
+echo "Welcome to your new account!" | sudo tee /etc/skel/welcome.txt
+```
+
         
 5. **Set a Different Default Shell**:
     
@@ -80,18 +107,30 @@
     
     - Use the `adduser` command to create a new user:
         
-    `sudo adduser testuser`
+
+```bash
+sudo adduser testuser
+```
+
         
 2. **Verify the Changes**:
     
     - Check the home directory of the new user:
         
-    `ls /mnt/users/testuser`
+
+```bash
+ls /mnt/users/testuser
+```
+
         
     - Confirm that the `welcome.txt` file exists in the home directory.
     - Verify the UID, GID, and default shell for the new user:
         
-    `grep testuser /etc/passwd`
+
+```bash
+grep testuser /etc/passwd
+```
+
         
 ---
 
@@ -118,19 +157,40 @@ Understand and implement ACLs to assign fine-grained permissions to specific use
 
 1. Create the project folder:
     
-    `sudo mkdir /projects/team_project`
+
+```bash
+sudo mkdir /projects/team_project
+```
+
     
 2. Create test files in the folder:
     
-    `sudo touch /projects/team_project/{file1.txt,file2.txt}`
+
+```bash
+sudo touch /projects/team_project/{file1.txt,file2.txt}
+```
+
     
-3. Change ownership of the folder to a generic group (e.g., `developers`):
+3. Change ownership of the folder to a generic group (e.g.,
+
+```bash
+developers
+```
+
     
-    `sudo chown -R root:developers /projects/team_project`
+
+```bash
+sudo chown -R root:developers /projects/team_project
+```
+
     
 4. Set default permissions to allow group access:
     
-    `sudo chmod 770 /projects/team_project`
+
+```bash
+sudo chmod 770 /projects/team_project
+```
+
     
 ---
 
@@ -138,17 +198,29 @@ Understand and implement ACLs to assign fine-grained permissions to specific use
 
 1. **Grant Alice Full Permissions (Read, Write, Execute)**:
 
-    `sudo setfacl -m u:alice:rwx /projects/team_project`
+
+```bash
+sudo setfacl -m u:alice:rwx /projects/team_project
+```
+
     
 2. **Grant Bob Read-Only Permissions**:
     
-    `sudo setfacl -m u:bob:rx /projects/team_project`
+
+```bash
+sudo setfacl -m u:bob:rx /projects/team_project
+```
+
     
 3. **Grant Charlie Read and Write Permissions Without Deletion**:
     
     - To prevent deletion, set the sticky bit and assign specific write permissions:
         
-    `sudo chmod +t /projects/team_project sudo setfacl -m u:charlie:rw /projects/team_project`
+
+```bash
+sudo chmod +t /projects/team_project sudo setfacl -m u:charlie:rw /projects/team_project
+```
+
         
 4. **Verify the ACL Settings**:
     
@@ -164,15 +236,27 @@ Understand and implement ACLs to assign fine-grained permissions to specific use
     
     - For Alice:
         
-        `sudo su - alice cd /projects/team_project echo "Alice can write" > file1.txt`
+
+```bash
+sudo su - alice cd /projects/team_project echo "Alice can write" > file1.txt
+```
+
         
     - For Bob:
         
-        `sudo su - bob cd /projects/team_project cat file1.txt echo "Bob can write" >> file1.txt  # This should fail.`
+
+```bash
+sudo su - bob cd /projects/team_project cat file1.txt echo "Bob can write" >> file1.txt  # This should fail.
+```
+
         
     - For Charlie:
         
-        `sudo su - charlie cd /projects/team_project echo "Charlie can write" > file2.txt rm file1.txt  # This should fail due to the sticky bit.`
+
+```bash
+sudo su - charlie cd /projects/team_project echo "Charlie can write" > file2.txt rm file1.txt  # This should fail due to the sticky bit.
+```
+
         
 
 ---
@@ -198,7 +282,12 @@ getfacl /projects/team_project
 
 ### **Deliverables**
 
-1. Output of the `getfacl` command for the folder showing individual permissions.
+1. Output of the
+
+```bash
+getfacl
+```
+
 2. Screenshots or logs showing test results for each user’s access rights.
 3. Explanation of how the sticky bit and ACLs work together to meet the requirements.
 
@@ -235,11 +324,19 @@ Understand and implement sudo configurations for fine-grained privilege manageme
 
 1. Create the users:
     
-    `sudo useradd -m john sudo useradd -m mary sudo useradd -m paul`
+
+```bash
+sudo useradd -m john sudo useradd -m mary sudo useradd -m paul
+```
+
     
 2. Set passwords for the users:
 
-    `sudo passwd john sudo passwd mary sudo passwd paul`
+
+```bash
+sudo passwd john sudo passwd mary sudo passwd paul
+```
+
     
 ---
 
@@ -247,75 +344,154 @@ Understand and implement sudo configurations for fine-grained privilege manageme
 
 1. **Grant John Full Administrative Privileges**:
     
-    - Add John to the `sudo` group:
+- Add John to the
+
+```bash
+sudo
+```
+
     
-        `sudo usermod -aG sudo john`
+
+```bash
+sudo usermod -aG sudo john
+```
+
         
     - Verify that John can execute any command:
         
-        `su - john sudo whoami  # Should return "root"`
+
+```bash
+su - john sudo whoami  # Should return "root"
+```
+
         
 2. **Grant Mary Privileges to Manage System Updates**:
     
     - Edit the sudoers file:
     
-        `sudo visudo`
+
+```bash
+sudo visudo
+```
+
         
     - Add the following rule at the end:
         
-        `mary ALL=(ALL) NOPASSWD: /usr/bin/apt update, /usr/bin/apt upgrade`
+
+```bash
+mary ALL=(ALL) NOPASSWD: /usr/bin/apt update, /usr/bin/apt upgrade
+```
+
         
     - Test Mary’s access:
         
-        `su - mary sudo apt update  # Should work without a password. sudo useradd testuser  # Should fail.`
+
+```bash
+su - mary sudo apt update  # Should work without a password. sudo useradd testuser  # Should fail.
+```
+
         
 3. **Grant Paul Access to Manage Specific Services**:
     
     - Edit the sudoers file:
     
-        `sudo visudo`
+
+```bash
+sudo visudo
+```
+
         
     - Add the following rule:
         
-        `paul ALL=(ALL) NOPASSWD: /bin/systemctl restart apache2, /bin/systemctl restart mysql`
+
+```bash
+paul ALL=(ALL) NOPASSWD: /bin/systemctl restart apache2, /bin/systemctl restart mysql
+```
+
         
     - Test Paul’s access:
       
-        `su - paul sudo systemctl restart apache2  # Should work. sudo systemctl restart ssh  # Should fail.`
+
+```bash
+su - paul sudo systemctl restart apache2  # Should work. sudo systemctl restart ssh  # Should fail.
+```
+
         
 
 ---
 
 #### **Exercise 3: Restrict Access to the Sudo Command**
 
-1. Prevent unauthorized users from using `sudo`:
-    
-    - Ensure only specific users are part of the `sudo` group:
-     
-        `getent group sudo`
-        
-2. Remove a user from the `sudo` group if needed:
+1. Prevent unauthorized users from using
 
-    `sudo deluser <username> sudo`
+```bash
+sudo
+```
+
+    
+- Ensure only specific users are part of the
+
+```bash
+sudo
+```
+
+     
+
+```bash
+getent group sudo
+```
+
+        
+2. Remove a user from the
+
+```bash
+sudo
+```
+
+
+
+```bash
+sudo deluser <username> sudo
+```
+
     
 
 ---
 
 #### **Exercise 4: Logging and Monitoring Sudo Usage**
 
-1. Enable sudo logs in `/var/log/auth.log` (most Linux distributions have this enabled by default).
+1. Enable sudo logs in
+
+```bash
+/var/log/auth.log
+```
+
     
 2. Test logging by running a command as a sudo user and checking the log:
     
-    `sudo tail -f /var/log/auth.log`
+
+```bash
+sudo tail -f /var/log/auth.log
+```
+
     
-3. Look for entries indicating which commands were executed using `sudo`.
+3. Look for entries indicating which commands were executed using
+
+```bash
+sudo
+```
+
     
 ---
 
 ### **Deliverables**
 
-1. Screenshots or logs showing the `sudo` configuration for each user.
+1. Screenshots or logs showing the
+
+```bash
+sudo
+```
+
 2. Test results confirming correct permission enforcement for John, Mary, and Paul.
 3. Explanation of how the sudoers file is used to manage privileges.
 
@@ -331,15 +507,28 @@ Understand and implement sudo configurations for fine-grained privilege manageme
 
 1. **List Open Ports**:
     
-    - Use `ss` or `netstat` to list open ports:
+- Use
+
+```bash
+ss
+```
+
     
-        `sudo ss -tuln`
+
+```bash
+sudo ss -tuln
+```
+
         
 2. **Close Unnecessary Ports**:
     
     - Stop an unnecessary service (e.g., Apache):
     
-        `sudo systemctl stop apache2 sudo systemctl disable apache2`
+
+```bash
+sudo systemctl stop apache2 sudo systemctl disable apache2
+```
+
         
 
 ---
@@ -350,7 +539,11 @@ Understand and implement sudo configurations for fine-grained privilege manageme
     
     - Edit the SSH configuration file:
      
-        `sudo nano /etc/ssh/sshd_config`
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
         
     - Change the SSH port (e.g., to 2222):
      
@@ -358,7 +551,11 @@ Understand and implement sudo configurations for fine-grained privilege manageme
         
 2. **Restart SSH**:
 
-    `sudo systemctl restart sshd`
+
+```bash
+sudo systemctl restart sshd
+```
+
     
 
 ---
@@ -369,13 +566,21 @@ Understand and implement sudo configurations for fine-grained privilege manageme
     
     - Use:
      
-        `sudo apt update sudo apt upgrade`
+
+```bash
+sudo apt update sudo apt upgrade
+```
+
         
 2. **Automate Updates**:
     
     - Install `unattended-upgrades`:
       
-        `sudo apt install unattended-upgrades sudo dpkg-reconfigure unattended-upgrades`
+
+```bash
+sudo apt install unattended-upgrades sudo dpkg-reconfigure unattended-upgrades
+```
+
         
 
 ---
@@ -386,7 +591,12 @@ Understand and implement sudo configurations for fine-grained privilege manageme
 
 #### **Objective**
 
-Enable Two-Factor Authentication (2FA) for system login using Google Authenticator and configure it in the `common-auth` file.
+Enable Two-Factor Authentication (2FA) for system login using Google Authenticator and configure it in the
+
+```bash
+common-auth
+```
+
 
 ---
 
@@ -396,11 +606,19 @@ Enable Two-Factor Authentication (2FA) for system login using Google Authenticat
 
 1. Update the system package index:
    
-    `sudo apt update`
+
+```bash
+sudo apt update
+```
+
     
 2. Install the Google Authenticator PAM module:
   
-    `sudo apt install libpam-google-authenticator -y`
+
+```bash
+sudo apt install libpam-google-authenticator -y
+```
+
     
 ---
 
@@ -412,7 +630,11 @@ Enable Two-Factor Authentication (2FA) for system login using Google Authenticat
     
 2. Run the Google Authenticator setup:
 
-    `google-authenticator`
+
+```bash
+google-authenticator
+```
+
     
 3. Follow the prompts:
     
@@ -426,11 +648,19 @@ Enable Two-Factor Authentication (2FA) for system login using Google Authenticat
 
 1. Open the `common-auth` file:
    
-    `sudo nano /etc/pam.d/common-auth`
+
+```bash
+sudo nano /etc/pam.d/common-auth
+```
+
     
 2. Add the following line **at the top** of the file:
 
-    `auth required pam_google_authenticator.so`
+
+```bash
+auth required pam_google_authenticator.so
+```
+
     
 3. Save and exit the file (`Ctrl+O`, `Enter`, `Ctrl+X`).
     
@@ -482,43 +712,76 @@ You are a cybersecurity analyst at **SecureTech Ltd**. In addition to disabling 
 
 #### **Part 1: Configure SSH Key-Based Authentication**
 1. **Switch to the root user**
-    `sudo su root`
+
+```bash
+sudo su root
+```
+
 1. **Generate SSH Key Pair**
     
     - On your local machine, generate an SSH key pair (public and private keys):
         
-        `ssh-keygen -t rsa -b 4096`
+
+```bash
+ssh-keygen -t rsa -b 4096
+```
+
         
-    - Press `Enter` to save the key in the default location (`~/.ssh/id_rsa`), or specify a custom path.
+- Press
+
+```bash
+Enter
+```
+
     - When prompted, set a passphrase for added security (optional).
 2. **Copy the Public Key to the Server**
     
     - Use the following command to copy your public key to the server:
 
-        `ssh-copy-id <username>@<server-ip>`
+
+```bash
+ssh-copy-id <username>@<server-ip>
+```
+
         
 4. **Edit the SSH Configuration File**
     
     - Open the SSH configuration file on the server:
     
-        `sudo nano /etc/ssh/sshd_config`
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
         
     - Ensure the following lines are set:
     
-        `PubkeyAuthentication yes PasswordAuthentication no`
+
+```bash
+PubkeyAuthentication yes PasswordAuthentication no
+```
+
         
     - Save and exit.
 5. **Restart the SSH Service**
     
     - Restart the SSH service to apply changes:
     
-        `sudo systemctl restart ssh`
+
+```bash
+sudo systemctl restart ssh
+```
+
         
 6. **Test Key-Based Authentication**
     
     - Attempt to log in to the server using the private key:
     
-        `ssh <username>@<server-ip>`
+
+```bash
+ssh <username>@<server-ip>
+```
+
         
     - Confirm that the login works without a password prompt.
 
@@ -528,7 +791,12 @@ You are a cybersecurity analyst at **SecureTech Ltd**. In addition to disabling 
 
 1. **Edit the SSH Configuration File**
     
-    - In the SSH configuration file (`/etc/ssh/sshd_config`), ensure the following line is set:
+- In the SSH configuration file (
+
+```bash
+/etc/ssh/sshd_config
+```
+
         
         `PermitRootLogin no`
         
@@ -537,13 +805,21 @@ You are a cybersecurity analyst at **SecureTech Ltd**. In addition to disabling 
     
     - Restart the SSH service again to apply the root login changes:
     
-        `sudo systemctl restart sshd`
+
+```bash
+sudo systemctl restart sshd
+```
+
         
 3. **Test Root Login**
     
     - Verify that logging in as root is no longer possible:
      
-        `ssh root@<server-ip>`
+
+```bash
+ssh root@<server-ip>
+```
+
         
 
 ---
@@ -551,7 +827,12 @@ You are a cybersecurity analyst at **SecureTech Ltd**. In addition to disabling 
 
 1. **Screenshot of the key generation process** on your local machine.
 2. **Screenshot of the public key being copied to the server** and the `authorized_keys` file setup.
-3. **Screenshot of the `sshd_config` file** showing settings for key-based authentication and root login disabled.
+3. **Screenshot of the
+
+```bash
+sshd_config
+```
+
 4. **Screenshot of the SSH service restart**.
 5. **Screenshot of a successful key-based login** and a failed root login attempt.
 
@@ -572,7 +853,12 @@ You are a cybersecurity analyst at **SecureTech Ltd**. In addition to disabling 
 
 #### **Scenario**
 
-You are a system administrator for **CyberShield Inc.**, a company that handles sensitive client data. To comply with security policies, you are Exerciseed with strengthening user account security by configuring parameters in the `login.defs` file. This includes controlling password policies, account expiration, and UID/GID ranges.
+You are a system administrator for **CyberShield Inc.**, a company that handles sensitive client data. To comply with security policies, you are Exerciseed with strengthening user account security by configuring parameters in the
+
+```bash
+login.defs
+```
+
 
 Your goal is to ensure that all user accounts adhere to these policies for better security management.
 
@@ -582,18 +868,42 @@ Your goal is to ensure that all user accounts adhere to these policies for bette
 
 #### **Part 1: Exploring `login.defs`**
 
-1. **Locate the `login.defs` File**
+1. **Locate the
+
+```bash
+login.defs
+```
+
     
     - Use the following command to locate the file:
 
-        `sudo nano /etc/login.defs`
+
+```bash
+sudo nano /etc/login.defs
+```
+
         
 2. **Review Key Fields**
     
     - Find and take note of the following fields and their current values:
-        - `PASS_MAX_DAYS`: Maximum number of days a password is valid.
-        - `PASS_MIN_DAYS`: Minimum number of days between password changes.
-        - `PASS_WARN_AGE`: Number of days before expiration that a warning is issued.
+-
+
+```bash
+PASS_MAX_DAYS
+```
+
+-
+
+```bash
+PASS_MIN_DAYS
+```
+
+-
+
+```bash
+PASS_WARN_AGE
+```
+
         - `UID_MIN` and `UID_MAX`: Range of UIDs for regular user accounts.
         - `GID_MIN` and `GID_MAX`: Range of GIDs for regular groups.
 
@@ -621,25 +931,51 @@ Your goal is to ensure that all user accounts adhere to these policies for bette
     
     - Add a new user to verify the settings:
       
-        `sudo useradd testuser`
+
+```bash
+sudo useradd testuser
+```
+
         
 2. **Check Password Expiration**
     
-    - Use the `chage` command to view the password expiration details for the new user:
+- Use the
+
+```bash
+chage
+```
+
         
-        `sudo chage -l testuser`
+
+```bash
+sudo chage -l testuser
+```
+
         
 3. **Modify the Password**
     
-    - Set a password for the test user and verify compliance with the `PASS_MIN_DAYS` policy:
+- Set a password for the test user and verify compliance with the
+
+```bash
+PASS_MIN_DAYS
+```
+
              
-        `sudo passwd testuser`
+
+```bash
+sudo passwd testuser
+```
+
         
 4. **Attempt Early Password Change**
     
     - Log in as the test user and try changing the password before 7 days have passed:
 
-        `passwd`
+
+```bash
+passwd
+```
+
         
 
 ---
@@ -647,7 +983,12 @@ Your goal is to ensure that all user accounts adhere to these policies for bette
 ### **Deliverables**
 
 1. **Screenshot of the edited `login.defs` file** showing updated fields.
-2. **Screenshot of the `chage` output** for the test user confirming password expiration details.
+2. **Screenshot of the
+
+```bash
+chage
+```
+
 3. **Screenshot of an attempt to change the password before the minimum days have elapsed** and the resulting error.
 
 ---
@@ -655,7 +996,12 @@ Your goal is to ensure that all user accounts adhere to these policies for bette
 ### **Grading Criteria**
 
 1. The `login.defs` file is correctly edited with the specified values.
-2. Password policies are accurately reflected in the `chage` command output.
+2. Password policies are accurately reflected in the
+
+```bash
+chage
+```
+
 3. The system enforces the minimum password age when an early change is attempted.
 4. All required screenshots are submitted.
 
@@ -666,9 +1012,19 @@ Your goal is to ensure that all user accounts adhere to these policies for bette
 
 #### **Scenario**
 
-You are the security administrator for **SecureNet Corp.**, a company dealing with sensitive data. To improve security and comply with regulatory standards, you are Exerciseed with setting up system auditing to track critical events. You will use the `auditd` (Audit Daemon) to monitor key activities such as user logins, file access, and changes to system files.
+You are the security administrator for **SecureNet Corp.**, a company dealing with sensitive data. To improve security and comply with regulatory standards, you are Exerciseed with setting up system auditing to track critical events. You will use the
 
-Your goal is to configure `auditd` to monitor these events and ensure that all actions are logged for auditing purposes. You will also test the configuration by generating specific audit logs.
+```bash
+auditd
+```
+
+
+Your goal is to configure
+
+```bash
+auditd
+```
+
 
 ---
 
@@ -680,19 +1036,31 @@ Your goal is to configure `auditd` to monitor these events and ensure that all a
     
     - First, ensure that `auditd` is installed on your system:
     
-        `sudo apt update sudo apt install auditd`
+
+```bash
+sudo apt update sudo apt install auditd
+```
+
         
 2. **Start and Enable `auditd` Service**
     
     - Start the `auditd` service and enable it to run on boot:
       
-        `sudo systemctl start auditd sudo systemctl enable auditd`
+
+```bash
+sudo systemctl start auditd sudo systemctl enable auditd
+```
+
         
 3. **Verify `auditd` Status**
     
     - Check the status of the `auditd` service:
      
-        `sudo systemctl status auditd`
+
+```bash
+sudo systemctl status auditd
+```
+
         
 
 #### **Part 2: Configure Audit Rules**
@@ -701,13 +1069,21 @@ Your goal is to configure `auditd` to monitor these events and ensure that all a
     
     - List the current audit rules to see the default configuration:
     
-        `sudo auditctl -l`
+
+```bash
+sudo auditctl -l
+```
+
         
 2. **Add Audit Rule to Monitor User Logins**
     
     - Add an audit rule to monitor successful and failed login attempts by editing the rules file:
       
-        `sudo nano /etc/audit/rules.d/audit.rules`
+
+```bash
+sudo nano /etc/audit/rules.d/audit.rules
+```
+
         
         Add the following lines to monitor user logins:
         
@@ -715,15 +1091,28 @@ Your goal is to configure `auditd` to monitor these events and ensure that all a
         
 3. **Add Rule to Monitor Access to Sensitive Files**
     
-    - Add audit rules to monitor access and modification of critical system files, such as `/etc/passwd`:
+- Add audit rules to monitor access and modification of critical system files, such as
+
+```bash
+/etc/passwd
+```
+
     
-        `-w /etc/passwd -p wa -k passwd-modifications`
+
+```bash
+-w /etc/passwd -p wa -k passwd-modifications
+```
+
         
 4. **Save and Apply Rules**
     
     - After making the changes, save the file and reload the audit rules:
       
-        `sudo service auditd restart`
+
+```bash
+sudo service auditd restart
+```
+
         
 
 #### **Part 3: Generate Audit Logs**
@@ -732,26 +1121,52 @@ Your goal is to configure `auditd` to monitor these events and ensure that all a
     
     - Log in to the system with a test user:
      
-        `sudo useradd testuser sudo passwd testuser`
+
+```bash
+sudo useradd testuser sudo passwd testuser
+```
+
         
 2. **Check the Audit Logs**
     
     - Review the audit logs for entries related to login activities:
         
-        `sudo ausearch -k user-logins`
+
+```bash
+sudo ausearch -k user-logins
+```
+
         
 3. **Simulate a Modification of a Critical File**
     
-    - As the root user, modify the `/etc/passwd` file:
+- As the root user, modify the
+
+```bash
+/etc/passwd
+```
+
     
-        `sudo nano /etc/passwd`
+
+```bash
+sudo nano /etc/passwd
+```
+
         
         Save and exit.
 4. **Check for File Modification Logs**
     
-    - Review the audit logs for any changes to the `/etc/passwd` file:
+- Review the audit logs for any changes to the
+
+```bash
+/etc/passwd
+```
+
      
-        `sudo ausearch -k passwd-modifications`
+
+```bash
+sudo ausearch -k passwd-modifications
+```
+
         
 
 #### **Part 4: Testing and Verification**
@@ -760,13 +1175,21 @@ Your goal is to configure `auditd` to monitor these events and ensure that all a
     
     - Reboot the system and verify that the audit daemon is still running:
       
-        `sudo reboot sudo systemctl status auditd`
+
+```bash
+sudo reboot sudo systemctl status auditd
+```
+
         
 2. **Check for Audit Log Integrity**
     
     - Check the integrity of the logs to ensure they haven't been tampered with:
       
-        `sudo ausearch -i`
+
+```bash
+sudo ausearch -i
+```
+
         
 
 ---
@@ -774,8 +1197,23 @@ Your goal is to configure `auditd` to monitor these events and ensure that all a
 ### **Deliverables**
 
 1. **Screenshot of the `auditd` status** after installation and service startup.
-2. **Screenshot of the audit rules** from `/etc/audit/rules.d/audit.rules` showing the added rules for login and file modification monitoring.
-3. **Screenshot of the output** from `ausearch` showing the audit logs for user logins and file modifications.
-4. **Screenshot of the test file modification** logs related to `/etc/passwd`.
+2. **Screenshot of the audit rules** from
+
+```bash
+/etc/audit/rules.d/audit.rules
+```
+
+3. **Screenshot of the output** from
+
+```bash
+ausearch
+```
+
+4. **Screenshot of the test file modification** logs related to
+
+```bash
+/etc/passwd
+```
+
 5. **Screenshot of the audit log verification** after the system reboot.
 

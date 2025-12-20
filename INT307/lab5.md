@@ -73,10 +73,30 @@ In this lab, you will explore various security misconfigurations that can occur 
 1. **Analyze Security Headers**:
    - Use BurpSuite or your browser's developer tools to inspect the HTTP response headers of the application.
    - Check for the presence of security headers such as:
-     - `X-Content-Type-Options`
-     - `X-Frame-Options`
-     - `Content-Security-Policy`
-     - `Strict-Transport-Security`
+     -
+
+```bash
+X-Content-Type-Options
+```
+
+     -
+
+```bash
+X-Frame-Options
+```
+
+     -
+
+```bash
+Content-Security-Policy
+```
+
+     -
+
+```bash
+Strict-Transport-Security
+```
+
 
 2. **Reflection**:
    - Are there any missing security headers?

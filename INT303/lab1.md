@@ -44,7 +44,17 @@ By the end of this lab, students will:
 ### **Exercise 2: Pinging the OWASP Broken Web Application**
 
 3. **Task:** Use the `ping` command to check the reachability of the OWASP Broken Web Application using its IP address.
-   - Command: `ping <OWASP_IP>` (replace `<OWASP_IP>` with the actual IP, e.g., `ping 192.168.56.101`)
+
+```bash
+# Replace <OWASP_IP> with the actual IP address
+ping <OWASP_IP>
+
+# Example:
+ping 192.168.56.101
+
+# Send only 4 packets
+ping -c 4 192.168.56.101
+```
    
 4. **Question:**
    - What happens when you ping the OWASP application? Describe the process.
@@ -55,7 +65,14 @@ By the end of this lab, students will:
 ### **Exercise 3: Tracing the Path to the OWASP Application**
 
 5. **Task:** Use the `traceroute` command to trace the route packets take to reach the OWASP Broken Web Application.
-   - Command: `traceroute <OWASP_IP>` (e.g., `traceroute 192.168.56.101`)
+
+```bash
+# Trace the route to OWASP VM
+traceroute <OWASP_IP>
+
+# Example:
+traceroute 192.168.56.101
+```
    
 6. **Question:**
    - How many hops did it take to reach the OWASP VM?
@@ -66,7 +83,14 @@ By the end of this lab, students will:
 ### **Exercise 4: Viewing Active Connections to OWASP VM**
 
 7. **Task:** Use `netstat` to view active network connections between your system and the OWASP application.
-   - Command: `netstat -an | grep <OWASP_IP>`
+
+```bash
+# View active connections to OWASP VM
+netstat -an | grep <OWASP_IP>
+
+# Alternative: use ss command (modern replacement for netstat)
+ss -an | grep <OWASP_IP>
+```
    
 8. **Question:**
    - What connections do you see? Identify the source and destination IP addresses.
@@ -77,10 +101,20 @@ By the end of this lab, students will:
 ### **Exercise 5: TCP vs. UDP**
 
 9. **Task:** Investigate the difference between TCP and UDP by scanning the OWASP Broken Web Application.
-   - Run a TCP scan using `nmap`.
-   - Command: `nmap -sT <OWASP_IP>`
-   - Run a UDP scan.
-   - Command: `nmap -sU <OWASP_IP>`
+
+```bash
+# Run a TCP scan using nmap
+nmap -sT <OWASP_IP>
+
+# Example:
+nmap -sT 192.168.56.101
+
+# Run a UDP scan (requires root privileges)
+sudo nmap -sU <OWASP_IP>
+
+# Example:
+sudo nmap -sU 192.168.56.101
+```
 
 10. **Question:**
    - What are the key differences between TCP and UDP in terms of reliability and speed?
@@ -91,7 +125,17 @@ By the end of this lab, students will:
 ### **Exercise 6: Discovering MAC Addresses with ARP**
 
 11. **Task:** Use the `arp` command to view the MAC address of the OWASP Broken Web Application.
-   - Command: `arp -a | grep <OWASP_IP>`
+
+```bash
+# View ARP cache and find OWASP VM's MAC address
+arp -a | grep <OWASP_IP>
+
+# Alternative: view entire ARP table
+arp -a
+
+# Modern alternative using ip command
+ip neigh show
+```
    
 12. **Question:**
    - What is the MAC address associated with the OWASP VM’s IP?
@@ -102,7 +146,20 @@ By the end of this lab, students will:
 ### **Exercise 7: Capturing Network Traffic with Wireshark**
 
 13. **Task:** Use Wireshark or `tshark` to capture network packets between your machine and the OWASP Broken Web Application.
-   - Command: `wireshark` (to launch the GUI) or `tshark -i <interface> host <OWASP_IP>`
+
+```bash
+# Launch Wireshark GUI
+wireshark
+
+# Or use tshark for command-line capture
+sudo tshark -i <interface> host <OWASP_IP>
+
+# Example: capture on eth0 interface
+sudo tshark -i eth0 host 192.168.56.101
+
+# Save capture to file
+sudo tshark -i eth0 -w capture.pcap host 192.168.56.101
+```
    
 14. **Question:**
    - Analyze the captured traffic. What protocols are in use?

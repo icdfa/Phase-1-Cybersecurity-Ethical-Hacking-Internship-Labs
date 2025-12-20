@@ -51,10 +51,25 @@ This lab aims to provide students with practical experience in managing files an
 
 1. **Networking Commands:**
    - Use the following commands in the Command Prompt to gather information about your network:
-     - **`ipconfig`**: Display your current IP address and network configuration.
-     - **`ping www.google.com`**: Check the connectivity to Google’s servers.
+- **
+
+```bash
+ipconfig
+```
+
+- **
+
+```bash
+ping www.google.com
+```
+
      - **`tracert www.google.com`**: Trace the route packets take to reach Google.
-     - **`netstat -a`**: Show active connections and listening ports.
+- **
+
+```bash
+netstat -a
+```
+
 
    **Task:**
    - Document the output of each command and explain what information you gathered.
@@ -66,7 +81,12 @@ This lab aims to provide students with practical experience in managing files an
    - Describe how you accessed the network folder and any challenges encountered.
 
 3. **Searching for Information:**
-   - Use the Windows search feature to locate all `.txt` files within the **`workspace4`** folder.
+- Use the Windows search feature to locate all
+
+```bash
+.txt
+```
+
 
    **Task:**
    - List the steps you took to perform the search and the results obtained.

@@ -25,7 +25,12 @@ In this lab, you will explore session management vulnerabilities, focusing on ho
    - Navigate to the login page and authenticate using valid credentials. Observe the session cookie generated upon successful login.
 
 3. **Inspect the Session Cookie**:
-   - Use the browser’s developer tools (F12) to inspect the session cookie set by the application. Take note of its attributes such as `HttpOnly`, `Secure`, and `SameSite`.
+- Use the browser’s developer tools (F12) to inspect the session cookie set by the application. Take note of its attributes such as
+
+```bash
+HttpOnly
+```
+
 
 4. **Reflection**:
    - Discuss the implications of the cookie attributes. What vulnerabilities can arise from improperly configured session cookies?
