@@ -71,7 +71,7 @@ This course covers advanced tools in Kali Linux, with a focus on reconnaissance,
 | -------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------ |
 | Lab 1          | [Get IP Address of Domain, WHOIS, DNS Lookup](INT_302_Week_1_and_2/lab1.md)                                                       | Mandatory          |
 | Lab 2          | [Website Enumeration and Information Gathering](INT_302_Week_1_and_2/lab2.md)                                                     | Mandatory          |
-| Lab 3          | [Subdomain Hunting using Sublist3r, DirB, and TheHarvester](INT_302_Week_1_and_2/lab3.md)                                         | Mandatory          |
+| Lab 3          | [Subdomain Hunting using Sublist3r, DirB, and KnockPy](INT_302_Week_1_and_2/lab3.md)                                         | Mandatory          |
 | Lab 4          | [Basic Port Scanning and Vulnerability Detection with Nmap & Nikto](INT_302_Week_1_and_2/lab4.md)                                 | Mandatory          |
 | Lab 5          | [Wireshark: Packet Capturing, Analyzing Network Traffic, and Filtering](INT_302_Week_1_and_2/lab5.md)                             | Mandatory          |
 | Lab 6          | [Advanced Packet Analysis with Custom Filters and Protocol Dissection](INT_302_Week_1_and_2/lab6.md)                              | Mandatory          |
