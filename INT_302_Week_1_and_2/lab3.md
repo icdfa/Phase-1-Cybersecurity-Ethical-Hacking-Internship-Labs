@@ -99,35 +99,117 @@ Perform a directory discovery scan on the following targets:
 
 ---
 
-#### **Step 3: Information Gathering Using `theHarvester`**
 
-`theHarvester` is a tool for gathering emails, subdomains, and other relevant information from search engines.
 
-**Instructions:**
-1. In the terminal, run the `theHarvester` command followed by the target domain.
+## **Step 3: Subdomain Enumeration Using `KnockPy`**
 
-   **Command Syntax**:
-   ```bash
-   theharvester -d <target domain> -b google
-   ```
+`KnockPy` is a reconnaissance tool used for **subdomain enumeration**. It helps identify subdomains associated with a target domain, which is a critical phase in information gathering and attack surface mapping.
 
-   **Example**:
-   ```bash
-   theharvester -d example.com -b google
-   ```
+### **Objective**
 
-**Expected Output**:  
-The output will show collected emails and other information about the specified domain.
-
-#### **Exercise 3**:  
-Use `theHarvester` to gather information on the following domain:
-- `example.com`
-
-**Record Your Findings**:
-- **Emails and Information Gathered**:
-  - __________
+Set up `KnockPy` in a Python virtual environment and use it to enumerate subdomains of a target domain.
 
 ---
+
+### **Instructions**
+
+#### **1. Create a Python Virtual Environment**
+
+From your terminal, create and activate a virtual environment to avoid dependency conflicts.
+
+```bash
+python3 -m venv knock-env
+source knock-env/bin/activate
+```
+
+---
+
+#### **2. Clone the KnockPy Repository**
+
+Clone the official KnockPy repository from GitHub.
+
+```bash
+git clone https://github.com/guelfoweb/knock.git
+cd knock
+```
+
+---
+
+#### **3. Upgrade Required Python Tools**
+
+Ensure `pip`, `setuptools`, and `wheel` are up to date.
+
+```bash
+pip install --upgrade pip setuptools wheel
+```
+
+---
+
+#### **4. Install KnockPy**
+
+Install KnockPy and its dependencies.
+
+```bash
+pip install .
+```
+
+**If you encounter dependency issues**, run the following commands:
+
+```bash
+pip install -r requirements.txt
+pip install .
+```
+
+---
+
+#### **5. Verify Installation**
+
+Confirm that KnockPy is installed successfully.
+
+```bash
+knockpy --version
+```
+
+---
+
+#### **6. Run Subdomain Enumeration**
+
+Execute KnockPy against the target domain using reconnaissance mode.
+
+```bash
+knockpy -d example.com --recon
+```
+
+---
+
+### **Expected Output**
+
+The output will display:
+
+* Discovered subdomains
+* IP addresses (if available)
+* DNS and reconnaissance-related information for the target domain
+
+---
+
+### **Exercise 3**
+
+Use `KnockPy` to enumerate subdomains for the following domain:
+
+* **Target Domain:** `example.com`
+
+---
+
+### **Record Your Findings**
+
+* **Discovered Subdomains and Information:**
+
+  * ---
+  * ---
+  * ---
+
+---
+
 
 ### **Submission Instructions**
 Submit your results from all exercises, including:
