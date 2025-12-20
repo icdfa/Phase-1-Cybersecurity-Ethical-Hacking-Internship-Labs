@@ -3,7 +3,7 @@
 ## **INT302: Kali Linux Tools and System Security – Lab 3: Subdomain Hunting**
 
 ### **Lab Overview**
-In this lab, you will learn how to identify subdomains associated with a target domain using various tools. Subdomain hunting is a crucial part of reconnaissance in penetration testing, as it helps identify additional attack surfaces that may not be immediately visible. We will utilize `sublist3r` for subdomain enumeration, `dirb` for directory discovery, and `theHarvester` for gathering information from public sources.
+In this lab, you will learn how to identify subdomains associated with a target domain using various tools. Subdomain hunting is a crucial part of reconnaissance in penetration testing, as it helps identify additional attack surfaces that may not be immediately visible. We will utilize `sublist3r` for subdomain enumeration, `dirb` for directory discovery, and `KnockPy` for gathering information from public sources.
 
 ---
 
@@ -11,7 +11,7 @@ In this lab, you will learn how to identify subdomains associated with a target 
 By the end of this lab, you will:
 1. Perform subdomain enumeration using `sublist3r`.
 2. Discover hidden directories on a target web server using `dirb`.
-3. Utilize `theHarvester` to gather additional information about the target domain.
+3. Utilize `KnockPy` to gather additional information about the target domain.
 
 ---
 
@@ -19,14 +19,14 @@ By the end of this lab, you will:
 - **Kali Linux**: A Linux distribution tailored for penetration testing.
 - **sublist3r**: A tool designed for subdomain enumeration.
 - **dirb**: A web content scanner for discovering hidden directories.
-- **theHarvester**: A tool for gathering emails and subdomains from public sources.
+- **KnockPy**: A tool for gathering emails and subdomains from public sources.
 
 ---
 
 ### **Prerequisites**
 - Basic knowledge of Kali Linux and command-line operations.
 - Internet access to perform scans on live web servers.
-- Tools `sublist3r`, `dirb`, and `theHarvester` installed in your Kali Linux environment (they usually come pre-installed).
+- Tools `sublist3r`, `dirb`, and `KnockPy` installed in your Kali Linux environment (they usually come pre-installed).
 
 ---
 
@@ -215,7 +215,7 @@ Use `KnockPy` to enumerate subdomains for the following domain:
 Submit your results from all exercises, including:
 - Detected subdomains from `sublist3r`.
 - Discovered directories from `dirb`.
-- Information gathered using `theHarvester`.
+- Information gathered using `KnockPy`.
 
 ---
 
