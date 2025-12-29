@@ -84,7 +84,7 @@ This course covers advanced tools in Kali Linux, with a focus on reconnaissance,
 | -------------- | -------------------------------------------------------------------------------------------------------------------------- | ------------------ |
 | Lab 7          | [Incident Response and Threat Hunting Techniques using Wireshark](INT_302_Week_1_and_2/lab7.md)                                   | Mandatory          |
 | Lab 8          | [Web Application Security Testing with BurpSuite and OWASP ZAP](INT_302_Week_1_and_2/lab8.md)                                     | Mandatory          |
-| Lab 9          | [Recon-ng and Shodan: Advanced Reconnaissance and Search](INT_302_Week_1_and_2/lab9.md)                                           | Mandatory          |
+| Lab 9          | [Reverse Shell via Netcat Using DVWA Command Execution](INT_302_Week_1_and_2/lab9.md)                                           | Mandatory          |
 | Lab 10         | [DNS Enumeration using Nslookup, Host, Dig, and Enum4linux](INT_302_Week_1_and_2/lab10.md)                                        | Mandatory          |
 | Lab 11         | [Using Tor and Proxychains for Anonymity and Traffic Routing](INT_302_Week_1_and_2/lab11.md)                                      | Mandatory          |
 | Lab 12         | [Password Cracking with John the Ripper: Practical Exercises](INT_302_Week_1_and_2/lab12.md)                                      | Mandatory          |
