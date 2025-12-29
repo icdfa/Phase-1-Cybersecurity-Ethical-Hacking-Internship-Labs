@@ -1,143 +1,289 @@
 
 
-## **INT302: Kali Linux Tools and System Security – Lab 11: Tor and Proxychains**
-
-### **Lab Overview**
-In this lab, participants will explore the use of Tor for anonymous browsing and Proxychains for routing traffic through multiple proxies. This lab will provide students with practical skills to protect their identity and enhance their security while conducting penetration testing and other security-related activities.
+## **INT302: Kali Linux Tools and System Security – Lab 11: Anonymity Testing with Tor and Proxychains**
 
 ---
 
-### **Lab Objectives**
+## **Lab Overview**
+
+This lab focuses on **anonymity testing and verification** using **Tor** and **Proxychains**. Students will configure Tor-based proxy routing, verify IP address masking, observe Tor circuit behavior, and evaluate the effectiveness and limitations of anonymity mechanisms used during security assessments and penetration testing activities.
+
+Rather than simple usage, this lab emphasizes **proof of anonymity**, **traffic routing validation**, and **operational limitations**.
+
+---
+
+## **Lab Objectives**
+
 By the end of this lab, you will be able to:
-1. Understand how Tor operates and its role in anonymity.
-2. Configure and use Proxychains to route network traffic through Tor.
-3. Conduct secure browsing and maintain anonymity using Tor and Proxychains.
+
+1. Explain how Tor provides anonymity through onion routing.
+2. Configure Proxychains to route traffic through the Tor network.
+3. Verify anonymity by comparing real IP addresses with Tor exit node IPs.
+4. Analyze Tor circuit persistence and IP rotation behavior.
+5. Identify limitations and risks of using Tor and Proxychains during security testing.
 
 ---
 
-### **Tools Used**
-- **Tor**: A free software for enabling anonymous communication over the internet.
-- **Proxychains**: A tool that forces any TCP connection made by any given application to follow through proxy (Tor, in this case).
+## **Tools Used**
+
+* **Tor** – Provides anonymity via onion routing and Tor exit nodes.
+* **Proxychains-ng** – Forces applications to route traffic through Tor (SOCKS5).
+* **Curl** – Used for IP and traffic verification.
+* **Firefox (optional)** – For browser-based IP verification.
 
 ---
 
-### **Prerequisites**
-- Basic understanding of networking concepts.
-- Familiarity with command-line operations in Linux.
+## **Prerequisites**
+
+* Basic knowledge of IP addressing and TCP/IP networking
+* Familiarity with Linux terminal usage
+* Kali Linux environment with internet access
 
 ---
 
-### **Lab Steps**
-
-#### **Step 1: Installing Tor and Proxychains**
-
-1. **Installing Tor**:
-   - Open your terminal in Kali Linux and install Tor:
-     ```bash
-     sudo apt update
-     sudo apt install tor
-     ```
-
-2. **Installing Proxychains**:
-   - Ensure Proxychains is installed:
-     ```bash
-     sudo apt install proxychains
-     ```
-
-#### **Step 2: Configuring Tor**
-
-1. **Starting the Tor Service**:
-   - Start the Tor service to enable anonymous browsing:
-     ```bash
-     sudo service tor start
-     ```
-
-2. **Verifying Tor is Running**:
-   - Check if Tor is running correctly:
-     ```bash
-     systemctl status tor
-     ```
-
-**Exercise 1**:  
-- What output do you see when checking the Tor status? Is it running? __________
-
-#### **Step 3: Configuring Proxychains**
-
-1. **Editing Proxychains Configuration**:
-   - Open the Proxychains configuration file for editing:
-     ```bash
-     sudo nano /etc/proxychains.conf
-     ```
-   - Uncomment the following line to enable Tor:
-     ```
-     dynamic_chain
-     proxy_dns
-     [ProxyList]
-     # add proxy here ...
-     # meanwile
-     # defaults set to tor
-     socks5 127.0.0.1 9050
-     ```
-
-**Exercise 2**:  
-- What are the different proxy modes available in Proxychains? Briefly explain each. __________
-
-#### **Step 4: Using Tor with Proxychains**
-
-1. **Testing Anonymity with Curl**:
-   - Use Proxychains to make an anonymous request using `curl`:
-     ```bash
-     proxychains curl https://httpbin.org/ip
-     ```
-
-**Exercise 3**:  
-- What IP address do you see in the output? How does it compare to your actual IP address? __________
-
-2. **Browsing with Firefox**:
-   - Open Firefox with Proxychains to browse the web anonymously:
-     ```bash
-     proxychains firefox
-     ```
-
-**Exercise 4**:  
-- Navigate to any website and check your IP address using a service like `https://www.whatismyip.com/`. Does it show the Tor exit node IP address? __________
-
-#### **Step 5: Advanced Usage of Proxychains**
-
-1. **Using Proxychains with Other Tools**:
-   - Try using Proxychains with other command-line tools like `nmap`:
-     ```bash
-     proxychains nmap -sT -Pn <target-ip>
-     ```
-
-**Exercise 5**:  
-- How does routing your Nmap scans through Tor affect your scanning capabilities? What limitations did you encounter? __________
-
-2. **Combining Proxychains with Other Proxies**:
-   - Add additional proxies to the Proxychains configuration file to test different routes.
-
-**Exercise 6**:  
-- Experiment with adding another HTTP proxy (e.g., a public proxy server) and rerun your curl command. How does the response change? __________
+## **Lab Steps**
 
 ---
 
-### **Step 6: Analyzing Results**
+## **Step 1: Installing Required Tools**
 
-1. **Understanding Limitations and Risks**:
-   - Discuss the limitations of using Tor and Proxychains for anonymity.
-   - Consider the potential for traffic analysis and exit node vulnerabilities.
+1. **Update System Packages**
 
-**Exercise 7**:  
-- What are some risks associated with using Tor? What precautions can you take while using it? __________
+```bash
+sudo apt update
+```
+
+2. **Install Tor**
+
+```bash
+sudo apt install tor -y
+```
+
+3. **Install Proxychains**
+
+```bash
+sudo apt install proxychains -y
+```
 
 ---
 
-### **Conclusion**
-In this lab, you gained hands-on experience using Tor for anonymous browsing and Proxychains for routing network traffic. You learned how to configure both tools and analyze their effectiveness in maintaining anonymity online.
+## **Step 2: Configuring and Starting Tor**
+
+1. **Start the Tor Service**
+
+```bash
+sudo service tor start
+```
+
+2. **Verify Tor Status**
+
+```bash
+systemctl status tor
+```
+
+**Exercise 1**
+
+* Record the Tor service status output.
+* Is the Tor service running successfully?
 
 ---
 
-### **Next Steps**
-In the next lab, we will focus on advanced techniques for web application testing, including the use of tools like Burp Suite and OWASP ZAP.
+---
+
+## **Step 3: Configuring Proxychains for Anonymity**
+
+1. **Edit Proxychains Configuration**
+
+```bash
+sudo nano /etc/proxychains.conf
+```
+
+2. **Apply the Following Settings**
+   Ensure the configuration includes:
+
+```ini
+strict_chain
+proxy_dns
+tcp_read_time_out 15000
+tcp_connect_time_out 8000
+
+[ProxyList]
+socks5 127.0.0.1 9050
+```
+
+> **Note:**
+> `strict_chain` ensures traffic must pass through Tor.
+> `proxy_dns` prevents DNS leaks.
+
+**Exercise 2**
+
+* Explain the difference between `strict_chain`, `dynamic_chain`, and `random_chain`.
 
 ---
+
+---
+
+## **Step 4: Baseline IP Address Identification (Non‑Anonymous)**
+
+1. **Check Your Real IP Address**
+
+```bash
+curl https://httpbin.org/ip
+```
+
+2. **Record the IP Address**
+
+```
+"origin": _____________________
+```
+
+**Exercise 3**
+
+* Is this IP associated with your ISP or local network?
+
+---
+
+---
+
+## **Step 5: Anonymity Verification Using Proxychains**
+
+1. **Test Anonymous Connection**
+
+```bash
+proxychains curl https://httpbin.org/ip
+```
+
+2. **Observe the Output**
+   Example:
+
+```json
+{
+  "origin": "185.183.159.40"
+}
+```
+
+**Exercise 4**
+
+* Compare this IP with your real IP from Step 4.
+* Is the IP different?
+* What does this confirm about your anonymity?
+
+---
+
+---
+
+## **Step 6: Tor Circuit Persistence and IP Behavior**
+
+1. **Repeat the Command Multiple Times**
+
+```bash
+proxychains curl https://httpbin.org/ip
+```
+
+2. **Observe Whether the IP Changes**
+
+**Exercise 5**
+
+* Did the IP address remain the same or change?
+* What does this indicate about Tor circuit reuse?
+
+---
+
+---
+
+## **Step 7: Forcing a New Tor Identity (Optional Advanced Test)**
+
+1. **Restart Tor**
+
+```bash
+sudo service tor restart
+```
+
+2. **Re-test IP Address**
+
+```bash
+proxychains curl https://httpbin.org/ip
+```
+
+**Exercise 6**
+
+* Did the Tor exit IP change after restarting Tor?
+* Why is IP rotation not guaranteed on every request?
+
+---
+
+---
+
+## **Step 8: Browser-Based Anonymity Testing (Optional)**
+
+1. **Launch Firefox Through Proxychains**
+
+```bash
+proxychains firefox
+```
+
+2. **Visit an IP Check Website**
+
+* [https://www.whatismyip.com/](https://www.whatismyip.com/)
+
+**Exercise 7**
+
+* Does the browser show the same Tor exit IP as the curl test?
+* Why is consistency important in anonymity testing?
+
+---
+
+---
+
+## **Step 9: Anonymity vs. Functionality Trade‑Off**
+
+1. **Optional Tool Test**
+
+```bash
+proxychains nmap -sT -Pn <target-ip>
+```
+
+**Exercise 8**
+
+* What limitations did you experience when routing scans through Tor?
+* Why is Tor unsuitable for certain types of active scanning?
+
+---
+
+---
+
+## **Step 10: Risk and Limitation Analysis**
+
+**Exercise 9**
+Answer the following:
+
+* What are the risks of Tor exit nodes?
+* How can DNS leaks compromise anonymity?
+* Why should Tor not be used for authenticated personal accounts?
+
+---
+
+---
+
+## **Conclusion**
+
+In this lab, you performed **practical anonymity testing** using Tor and Proxychains. You verified IP masking, analyzed Tor circuit behavior, evaluated IP persistence, and identified real‑world limitations of anonymous routing. These skills are essential for ethical hackers, digital forensic analysts, and privacy‑focused security professionals.
+
+---
+
+## **Deliverables**
+
+Students must submit:
+
+* Screenshots of IP comparison results
+* Answers to all exercises
+* A brief summary explaining whether anonymity was successfully achieved and why
+
+---
+
+## **Next Lab**
+
+The next lab will focus on **web traffic interception and anonymity risks** using tools such as **Burp Suite** and **OWASP ZAP**.
+
+---
+
