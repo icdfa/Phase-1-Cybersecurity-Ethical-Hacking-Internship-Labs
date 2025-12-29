@@ -1,158 +1,191 @@
 
-## **INT302: Kali Linux Tools and System Security – Lab 9: Information Gathering with Recon-ng and Shodan**
+## **INT302: Kali Linux Tools and System Security – Lab 9: Information Gathering with Shodan**
+
+---
 
 ### **Lab Overview**
-In this lab, participants will learn how to use Recon-ng, a powerful reconnaissance framework, and Shodan, a search engine for internet-connected devices. This lab will provide students with practical skills in gathering intelligence about targets and understanding the security landscape of connected devices.
+
+In this lab, participants will learn how to use **Shodan**, a powerful search engine for internet-connected devices, to discover exposed systems, services, and potential security risks. The lab provides hands-on experience in identifying publicly accessible infrastructure and understanding the external attack surface of organizations.
 
 ---
 
 ### **Lab Objectives**
+
 By the end of this lab, you will be able to:
-1. Set up and navigate Recon-ng for conducting reconnaissance.
-2. Utilize Shodan to discover information about devices connected to the internet.
-3. Extract valuable intelligence for penetration testing and security assessments.
-4. Analyze and document findings effectively.
+
+1. Understand how Shodan indexes internet-connected devices.
+2. Configure and use the Shodan CLI in Kali Linux.
+3. Discover exposed services, ports, and devices using Shodan queries.
+4. Analyze and document findings for security assessments.
 
 ---
 
-### **Tools Used**
-- **Recon-ng**: A full-featured Web Reconnaissance framework written in Python.
-- **Shodan**: A search engine that lets users find specific types of computers connected to the internet using a variety of filters.
+### **Tool Used**
+
+* **Shodan**: A search engine that identifies internet-connected devices, services, and systems using banners, ports, and metadata.
 
 ---
 
 ### **Prerequisites**
-- Basic understanding of reconnaissance techniques and tools.
-- Familiarity with command-line operations in Linux.
+
+* Basic understanding of reconnaissance and information gathering.
+* Familiarity with Linux command-line operations.
+* Internet access.
 
 ---
 
-### **Lab Steps**
-
-#### **Step 1: Setting Up Recon-ng**
-
-1. **Launch Recon-ng**:
-   - Open your terminal in Kali Linux.
-   - Type `recon-ng` to start the framework.
-
-2. **Creating a New Workspace**:
-   - Create a new workspace for this lab:
-     ```bash
-     workspaces create Lab9_Workspace
-     ```
-
-3. **Exploring Modules**:
-   - List available modules in Recon-ng:
-     ```bash
-     show modules
-     ```
-   - Focus on reconnaissance modules such as `domains`, `contacts`, and `social media`.
-
-**Exercise 1**:  
-- List the modules that can be used for domain reconnaissance. What are some key modules you might consider? __________
+## **Lab Steps**
 
 ---
 
-#### **Step 2: Using Recon-ng for Information Gathering**
+### **Step 1: Setting Up Shodan**
 
-1. **Adding a Domain**:
-   - Add a target domain to your workspace:
-     ```bash
-     add domains <target-domain>
-     ```
-   - Replace `<target-domain>` with a live domain, e.g., `example.com`.
+1. **Create a Shodan Account**
 
-2. **Running Modules**:
-   - Use the `whois` module to gather registration information:
-     ```bash
-     use recon/domains-hosts/whois
-     run
-     ```
-   - Explore other modules for gathering information such as `social_media`, `contacts`, etc.
+   * Visit the Shodan website and create an account.
+   * Obtain your **Shodan API key** from your account dashboard.
 
-**Exercise 2**:  
-- Document the registration details obtained from the `whois` module. What information did you find useful? __________
+2. **Install Shodan CLI** (if not already installed):
 
-3. **Automating Data Gathering**:
-   - Use additional modules for automated data collection, such as:
-     ```bash
-     use recon/hosts-hosts/resolve
-     run
-     ```
-
-**Exercise 3**:  
-- What new information was discovered about the target domain? List the subdomains or IP addresses obtained. __________
-
----
-
-#### **Step 3: Setting Up Shodan**
-
-1. **Creating a Shodan Account**:
-   - Go to the [Shodan website](https://www.shodan.io/) and create a free account to obtain an API key.
-   - Copy your API key for later use.
-
-2. **Installing Shodan CLI** (if not already installed):
    ```bash
    pip install shodan
    ```
 
-3. **Configuring Shodan**:
-   - In your terminal, configure Shodan with your API key:
-     ```bash
-     shodan init <YOUR_API_KEY>
-     ```
+3. **Configure Shodan with Your API Key**:
 
-**Exercise 4**:  
-- Verify that your API key is working by running:
+   ```bash
+   shodan init <YOUR_API_KEY>
+   ```
+
+**Exercise 1:**
+
+* Verify that Shodan is correctly configured by running:
+
   ```bash
   shodan info
   ```
+* Record your API plan and query limits. __________
 
 ---
 
-#### **Step 4: Using Shodan for Device Discovery**
+### **Step 2: Basic Shodan Searches**
 
-1. **Searching for Devices**:
-   - Use Shodan to find devices related to your target domain:
-     ```bash
-     shodan search <target-domain>
-     ```
-   - Example: 
-     ```bash
-     shodan search example.com
-     ```
+1. **Search by Domain or Organization Name**:
 
-**Exercise 5**:  
-- What devices were discovered related to the target domain? Provide a brief description of the findings. __________
+   ```bash
+   shodan search example.com
+   ```
 
-2. **Advanced Searches**:
-   - Utilize advanced search filters, such as:
-     - `port`: Find devices on specific ports (e.g., `port:22` for SSH).
-     - `country`: Limit searches to specific countries (e.g., `country:US`).
+2. **Search by IP Address**:
 
-**Exercise 6**:  
-- Perform an advanced search using two different filters. Document the results and discuss what types of devices you found. __________
+   ```bash
+   shodan host <IP_ADDRESS>
+   ```
+
+**Exercise 2:**
+
+* What information does Shodan reveal about the target (open ports, services, banners)? __________
 
 ---
 
-#### **Step 5: Analyzing and Reporting Findings**
+### **Step 3: Service and Port Enumeration**
 
-1. **Combining Data**:
-   - Compare the information gathered from Recon-ng and Shodan. Identify overlaps and unique findings.
-  
-2. **Documenting Your Findings**:
-   - Create a report summarizing your findings, including:
-     - Target domain details.
-     - Devices discovered via Shodan.
-     - Insights gained from Recon-ng modules.
-  
-**Exercise 7**:  
-- In your report, outline the methodologies used, tools employed, and key insights. Discuss how this information could be useful in a penetration testing engagement. __________
+1. **Search for Specific Services**:
+
+   ```bash
+   shodan search port:22
+   ```
+
+2. **Search for Web Servers**:
+
+   ```bash
+   shodan search port:80
+   ```
+
+3. **Search for Databases Exposed to the Internet**:
+
+   ```bash
+   shodan search port:3306
+   ```
+
+**Exercise 3:**
+
+* Identify at least two services exposed on the internet and explain why they could pose a security risk. __________
+
+---
+
+### **Step 4: Advanced Shodan Queries**
+
+1. **Country-Based Search**:
+
+   ```bash
+   shodan search country:NG
+   ```
+
+2. **Filter by Organization**:
+
+   ```bash
+   shodan search org:"Organization Name"
+   ```
+
+3. **Multiple Filters Combined**:
+
+   ```bash
+   shodan search port:443 country:US
+   ```
+
+**Exercise 4:**
+
+* Perform a search using at least two filters. Document the devices and services discovered. __________
+
+---
+
+### **Step 5: Identifying Security Exposure**
+
+1. **Search for Commonly Exposed Devices**:
+
+   * Routers
+   * CCTV cameras
+   * Industrial control systems (ICS)
+   * IoT devices
+
+   Example:
+
+   ```bash
+   shodan search "webcam"
+   ```
+
+2. **Analyze Service Banners**
+
+   * Review version numbers.
+   * Identify outdated or vulnerable software.
+
+**Exercise 5:**
+
+* Identify one potentially vulnerable system and explain why it may be at risk. __________
+
+---
+
+### **Step 6: Reporting and Analysis**
+
+1. **Document Findings**
+
+   * Target searched
+   * Query used
+   * Services discovered
+   * Potential security implications
+
+2. **Ethical Consideration**
+
+   * Discuss why Shodan should only be used for **defensive security, research, and authorized assessments**.
+
+**Exercise 6:**
+
+* Explain how Shodan findings can be useful during a penetration testing or blue team engagement. __________
 
 ---
 
 ### **Conclusion**
-In this lab, you gained hands-on experience using Recon-ng and Shodan for information gathering. You learned how to collect and analyze data from multiple sources to inform penetration testing and security assessments.
 
----
+In this lab, you gained practical experience using **Shodan** to discover internet-exposed systems and services. You learned how attackers and defenders alike can use publicly available data to understand an organization’s external attack surface and improve security posture.
 
