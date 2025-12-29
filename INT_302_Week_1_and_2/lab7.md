@@ -43,7 +43,7 @@ By the end of this lab, you will be able to:
 1. **Scenario Setup**:
 
    * You are part of the digital forensics team investigating anomalous network activity targeting customer database servers.
-   * The incident occurred on **Tuesday, November 19, 2024, between 14:30–16:45 UTC**.
+   * The incident occurred on **Tuesday, November 19, 2025, between 14:30–16:45 UTC**.
    * Your goal is to identify suspicious IP addresses, attack vectors, and compromised systems.
 
 2. **Initial Traffic Inspection**:
