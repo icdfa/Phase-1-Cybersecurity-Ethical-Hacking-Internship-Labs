@@ -1,4 +1,5 @@
 
+
 ## **INT302: Kali Linux Tools and System Security – Lab 9: Information Gathering with Shodan**
 
 ---
@@ -42,16 +43,30 @@ By the end of this lab, you will be able to:
 
 1. **Create a Shodan Account**
 
-   * Visit the Shodan website and create an account.
+   * Visit the [Shodan website](https://www.shodan.io/) and create an account.
    * Obtain your **Shodan API key** from your account dashboard.
 
-2. **Install Shodan CLI** (if not already installed):
+2. **Install Shodan CLI**
+
+   Kali Linux may restrict direct `pip install` for system Python. Use **pipx** or a **Python virtual environment**:
+
+   **Option A – Using pipx (recommended):**
 
    ```bash
+   sudo apt update
+   sudo apt install pipx python3-venv -y
+   pipx install shodan
+   ```
+
+   **Option B – Using a virtual environment:**
+
+   ```bash
+   python3 -m venv ~/shodan-venv
+   source ~/shodan-venv/bin/activate
    pip install shodan
    ```
 
-3. **Configure Shodan with Your API Key**:
+3. **Configure Shodan with Your API Key:**
 
    ```bash
    shodan init <YOUR_API_KEY>
@@ -59,7 +74,7 @@ By the end of this lab, you will be able to:
 
 **Exercise 1:**
 
-* Verify that Shodan is correctly configured by running:
+* Verify Shodan is correctly configured by running:
 
   ```bash
   shodan info
@@ -70,13 +85,13 @@ By the end of this lab, you will be able to:
 
 ### **Step 2: Basic Shodan Searches**
 
-1. **Search by Domain or Organization Name**:
+1. **Search by Domain or Organization Name:**
 
    ```bash
    shodan search example.com
    ```
 
-2. **Search by IP Address**:
+2. **Search by IP Address:**
 
    ```bash
    shodan host <IP_ADDRESS>
@@ -90,19 +105,19 @@ By the end of this lab, you will be able to:
 
 ### **Step 3: Service and Port Enumeration**
 
-1. **Search for Specific Services**:
+1. **Search for Specific Services:**
 
    ```bash
    shodan search port:22
    ```
 
-2. **Search for Web Servers**:
+2. **Search for Web Servers:**
 
    ```bash
    shodan search port:80
    ```
 
-3. **Search for Databases Exposed to the Internet**:
+3. **Search for Databases Exposed to the Internet:**
 
    ```bash
    shodan search port:3306
@@ -116,19 +131,19 @@ By the end of this lab, you will be able to:
 
 ### **Step 4: Advanced Shodan Queries**
 
-1. **Country-Based Search**:
+1. **Country-Based Search:**
 
    ```bash
    shodan search country:NG
    ```
 
-2. **Filter by Organization**:
+2. **Filter by Organization:**
 
    ```bash
    shodan search org:"Organization Name"
    ```
 
-3. **Multiple Filters Combined**:
+3. **Multiple Filters Combined:**
 
    ```bash
    shodan search port:443 country:US
@@ -142,7 +157,7 @@ By the end of this lab, you will be able to:
 
 ### **Step 5: Identifying Security Exposure**
 
-1. **Search for Commonly Exposed Devices**:
+1. **Search for Commonly Exposed Devices:**
 
    * Routers
    * CCTV cameras
@@ -175,7 +190,7 @@ By the end of this lab, you will be able to:
    * Services discovered
    * Potential security implications
 
-2. **Ethical Consideration**
+2. **Ethical Considerations**
 
    * Discuss why Shodan should only be used for **defensive security, research, and authorized assessments**.
 
@@ -189,3 +204,4 @@ By the end of this lab, you will be able to:
 
 In this lab, you gained practical experience using **Shodan** to discover internet-exposed systems and services. You learned how attackers and defenders alike can use publicly available data to understand an organization’s external attack surface and improve security posture.
 
+---
