@@ -1,9 +1,20 @@
 
-## **INT302: Kali Linux Tools and System Security – Lab 7: IoT Network Forensic Investigation Using Wireshark**
+## **INT302: Kali Linux Tools and System Security – Lab 7: IoT & Enterprise Network Forensic Investigation Using Wireshark**
+
+---
 
 ### **Lab Overview**
 
-In this lab, participants will investigate a network breach incident affecting **TechGlobal Solutions**. You will use **Wireshark** to analyze network traffic captured during a suspected attack, identify malicious activities targeting IoT and enterprise systems, and gather evidence to support a forensic investigation.
+In this lab, participants will conduct a **network forensic investigation** involving **BookWorld**, a major online bookstore. Recently, unusual behavior has been detected in BookWorld's **database activity**, including spikes in query volumes and server resource usage, suggesting the possibility of a **cyberattack**.
+
+You are part of a **Digital Forensics team**. The business is concerned about the **integrity of customer data** and its internal systems. Your mission is to:
+
+* Conduct a thorough forensic analysis of the network traffic
+* Identify how the attacker gained access
+* Assess the scope of the breach
+* Prepare your findings in a comprehensive report
+
+This lab emphasizes **active packet filtering, protocol analysis, and evidence discovery**, giving you hands-on experience in real-world enterprise network forensics.
 
 ---
 
@@ -11,153 +22,266 @@ In this lab, participants will investigate a network breach incident affecting *
 
 By the end of this lab, you will be able to:
 
-1. Analyze network traffic in the context of a real-world IoT/enterprise security incident.
-2. Identify indicators of compromise (IoCs) and suspicious communications.
-3. Investigate protocol usage, unusual ports, and traffic patterns in IoT environments.
-4. Generate a professional forensic report documenting findings, timelines, and remediation recommendations.
+1. Analyze network traffic related to a real-world enterprise web application.
+2. Identify indicators of compromise (IoCs) related to database abuse and web exploitation.
+3. Use Wireshark filters to detect suspicious HTTP POST requests, DNS queries, and database interactions.
+4. Trace attacker behavior from initial access to possible data exfiltration.
+5. Produce a professional forensic report documenting findings, timelines, and remediation recommendations.
 
 ---
 
 ### **Tools Used**
 
-* **Wireshark**: A graphical network protocol analyzer.
-* **tshark**: The terminal-based version of Wireshark.
-* **NetworkMiner (optional)**: For artifact extraction.
-* **WHOIS / GeoIP tools**: To identify external IP addresses and geographic locations.
+* **Wireshark** – Primary network forensic analysis tool
+* **tshark** – Command-line packet analysis
+* **NetworkMiner (optional)** – Artifact and credential extraction
+* **WHOIS / GeoIP tools** – External IP attribution
 
 ---
 
 ### **Prerequisites**
 
-* Completion of Lab 6: Advanced Packet Analysis Techniques.
-* Basic understanding of network protocols and security concepts.
+* Completion of Lab 6: Advanced Packet Analysis Techniques
+* Basic understanding of HTTP, TCP/IP, DNS, and database protocols
 * Access to the provided PCAP file:
-  [TechGlobal Network Breach PCAP](https://drive.google.com/file/d/1IV_V5weV8jBTqzgzLJxEKM0VjCpB1RmU/view)
+  [BookWorld Network Breach PCAP](https://drive.google.com/file/d/1IV_V5weV8jBTqzgzLJxEKM0VjCpB1RmU/view)
 
 ---
 
-### **Lab Steps**
+## **Lab Steps**
 
-#### **Step 1: Incident Response Analysis**
+---
 
-1. **Scenario Setup**:
+### **Step 1: Incident Response Analysis**
 
-   * You are part of the digital forensics team investigating anomalous network activity targeting customer database servers.
-   * The incident occurred on **Tuesday, November 19, 2025, between 14:30–16:45 UTC**.
-   * Your goal is to identify suspicious IP addresses, attack vectors, and compromised systems.
+#### **1. Scenario Setup**
 
-2. **Initial Traffic Inspection**:
+* You are a member of the **Digital Forensics team** investigating unusual activity at **BookWorld**.
+* Security monitoring detected:
 
-   * Open the PCAP file in Wireshark.
-   * Apply filters to focus on traffic patterns during the incident:
+  * Spikes in database query volumes
+  * Abnormal server resource usage
+  * External IPs targeting customer database servers
 
-     ```bash
-     ip.addr == <suspected IP>
-     tcp.port == <target port>
-     udp.port == <target port>
-     ```
+**Mission:**
+
+* Identify how the attacker gained access
+* Determine which systems and services were affected
+* Assess whether customer data was compromised
+* Prepare a comprehensive forensic report with evidence
+
+---
+
+#### **2. Initial Traffic Inspection**
+
+1. Open the PCAP file in Wireshark.
+2. Set the correct time format (**UTC**) and begin with **broad traffic visibility**.
+
+**Recommended display filters:**
+
+```bash
+ip.addr == <suspected IP>
+tcp
+udp
+```
 
 **Exercise 1:**
 
-* Describe the overall network traffic during the incident. Are there noticeable spikes or anomalies? What potential IoCs did you identify? __________
+* Describe the overall traffic behavior.
+* Are there spikes or repeated connections to critical servers?
+* What early indicators suggest malicious activity?
 
-3. **Extracting Suspicious Packets**:
+---
 
-   * Look for IoCs such as:
+---
 
-     * Connections from external IPs to internal databases.
-     * Repeated failed logins or authentication attempts.
-     * Suspicious payloads or command-and-control communications.
+#### **3. Identifying Suspicious Hosts**
+
+1. Navigate to:
+
+   * **Statistics → Endpoints**
+   * **Statistics → Conversations**
+2. Identify:
+
+   * External IPs communicating excessively with BookWorld servers
+   * Internal servers receiving abnormal traffic volumes
 
 **Exercise 2:**
 
-* Identify a specific packet that raises suspicion. Include source/destination IPs, ports, protocol, and explain why it is suspicious. __________
+* Identify at least one suspicious external IP address.
+* Why does this IP stand out compared to others?
 
 ---
 
-#### **Step 2: Protocol and Service Analysis**
+---
 
-1. **TCP/UDP Traffic Patterns**:
+### **Step 2: Web and Database Traffic Investigation**
 
-   * Analyze unusual port usage.
-   * Identify non-standard services being targeted.
+#### **1. HTTP Request Analysis (POST Investigation)**
 
-2. **DNS Query Analysis**:
+Attackers often abuse **HTTP POST requests** to:
 
-   * Filter DNS traffic:
+* Exploit login pages
+* Inject malicious payloads
+* Extract sensitive data
 
-     ```bash
-     udp.port == 53
-     ```
-   * Check for suspicious or dynamically generated domains (possible DGAs).
+Apply the following filter:
+
+```bash
+http.request.method == "POST"
+```
+
+Focus on:
+
+* Login endpoints
+* Customer and order-related queries
+* Repeated requests or unusually large payloads
 
 **Exercise 3:**
 
-* List any DNS queries indicating potential malicious domains and associated IPs. __________
+* Identify suspicious POST requests.
+* Which parameters or endpoints appear abnormal?
+* Are there repeated requests that could indicate brute-force or data extraction?
 
-3. **Identifying Attack Vectors**:
+---
 
-   * Determine the first malicious connection attempt.
-   * Map attack sequence: reconnaissance, exploitation, data exfiltration.
+---
+
+#### **2. Database-Related Traffic**
+
+Filter for database ports:
+
+```bash
+tcp.port == 3306    # MySQL
+tcp.port == 5432    # PostgreSQL
+tcp.port == 1433    # MSSQL
+```
+
+Look for:
+
+* External systems communicating with internal databases
+* Repeated query patterns
+* Abnormal session lengths
 
 **Exercise 4:**
 
-* Which protocol was predominantly used during the attack?
-* Identify the initial entry point. __________
+* Which database services were targeted?
+* What evidence suggests database enumeration or abuse?
 
 ---
 
-#### **Step 3: Anomaly Detection and Traffic Mapping**
+---
 
-1. **Conversation Mapping**:
+### **Step 3: DNS and Command‑and‑Control Analysis**
 
-   * Use Wireshark’s **Endpoints** and **Conversations** features.
-   * Map attacker IPs to targeted hosts and services.
+#### **1. DNS Traffic Inspection**
 
-2. **Data Exfiltration Indicators**:
+Filter DNS traffic:
 
-   * Identify unusually large outbound transfers.
-   * Observe outbound traffic patterns outside normal operating hours.
+```bash
+udp.port == 53
+```
+
+Look for:
+
+* Unusual domains or subdomains
+* Repeated DNS queries
+* Long or random-looking subdomains (possible DGAs)
 
 **Exercise 5:**
 
-* Document any anomalous traffic patterns and suggest potential malicious activities. __________
+* Identify suspicious domains.
+* Do the domains appear algorithmically generated or unrelated to BookWorld?
 
 ---
 
-#### **Step 4: Reporting Findings**
+---
 
-1. **Forensic Report Preparation**:
+#### **2. Data Exfiltration Indicators**
 
-   * Include:
+Apply filters to detect large outbound transfers:
 
-     * Executive summary of the incident.
-     * Attack timeline.
-     * Targeted systems and services.
-     * IoCs (malicious IPs, domains, protocols, ports).
-     * Supporting evidence (screenshots, packet captures).
+```bash
+tcp.len > 1000
+```
 
-2. **Recommendation Section**:
+Correlate with:
 
-   * Suggest network security improvements to prevent similar incidents.
+* POST requests
+* Database responses
+* Long TCP sessions
 
 **Exercise 6:**
 
-* Compile an incident report in a professional format, including all relevant analysis. __________
+* Is there evidence of data exfiltration?
+* Which protocol was likely used for exfiltration?
 
-3. **Presentation of Findings**:
+---
 
-   * Present your investigation results, highlighting analysis methods and key findings.
-   * Discuss the importance of proactive threat detection in enterprise and IoT environments.
+---
+
+### **Step 4: Attack Timeline Reconstruction**
+
+1. Identify:
+
+   * First malicious connection
+   * Exploitation phase
+   * Data exfiltration phase
+2. Use packet timestamps to build a **timeline of events**.
 
 **Exercise 7:**
 
-* Prepare a slide deck summarizing your investigation, findings, and remediation recommendations. __________
+* Reconstruct the attack sequence step by step.
+* At what point was customer data most at risk?
+
+---
+
+---
+
+### **Step 5: Reporting Findings**
+
+#### **1. Forensic Report Preparation**
+
+Your report should include:
+
+* Executive summary of the incident
+* Attack timeline and sequence of events
+* Entry point and exploited services
+* Affected systems and sensitive data
+* Indicators of Compromise (IPs, domains, ports)
+* Supporting evidence (screenshots, packet captures)
+
+**Exercise 8:**
+
+* Compile a **professional forensic report** based on your findings.
+
+---
+
+---
+
+#### **2. Presentation of Findings**
+
+* Present your findings as if briefing **BookWorld executives**.
+* Focus on **what happened**, **impact**, and **how to prevent recurrence**.
+
+**Exercise 9:**
+
+* Prepare a slide deck summarizing your investigation, findings, and remediation recommendations.
+
+---
 
 ---
 
 ### **Conclusion**
 
-In this lab, you performed a forensic investigation using **Wireshark** on a real-world IoT/enterprise network breach scenario. You identified attack vectors, suspicious traffic patterns, and IoCs, and produced a professional report with actionable recommendations.
+In this lab, you conducted a **hands-on forensic investigation** on BookWorld’s network using Wireshark. You:
+
+* Detected suspicious behavior
+* Identified attacker activity and database targeting
+* Assessed potential data exposure
+* Produced actionable forensic evidence and reporting
+
+This lab enhances your ability to **filter, pivot, and analyze traffic**, preparing you for real-world incident response.
 
 ---
+
