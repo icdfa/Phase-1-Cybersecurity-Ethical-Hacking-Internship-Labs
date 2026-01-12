@@ -549,5 +549,7 @@ Phase 1 is just the beginning of your journey. As you advance to the next phases
 We appreciate your commitment, hard work, and enthusiasm throughout these six months. We look forward to seeing how you will apply your skills and knowledge in the next phase of your training and in your future career. Continue to strive for excellence as you navigate the exciting world of digital forensics!
 
 ---
-
+<a href="https://trackgit.com">
+<img src="https://us-central1-trackgit-analytics.cloudfunctions.net/token/ping/mjzjxehm703wop4gdwrm" alt="trackgit-views" />
+</a>
 
