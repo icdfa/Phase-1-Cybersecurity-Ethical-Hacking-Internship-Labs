@@ -1,16 +1,16 @@
 
 
-#** INT308 Session Management and Web Security CTF Challenge: Session Hijacking Test on https://portal.aivtic.org.ng**
+#** INT308 Session Management and Web Security CTF Challenge: Session Hijacking Test on https://portal.icdfa.edu.ng**
 
 ### **Course Title**: INT308 - Session Management and Web Security  
-### **Challenge Title**: Testing for Session Hijacking on AIVTIC Portal  
+### **Challenge Title**: Testing for Session Hijacking on ICDFA Portal  
 ### **Submission Format**: PDF Report (Max 5MB)  
 ### **Weight**: 35%  
 
 ---
 
 ### **Objective**
-The objective of this CTF challenge is to enhance your practical skills in identifying and exploiting session hijacking vulnerabilities. You will use your login credentials to attempt to detect and exploit potential session hijacking issues on the AIVTIC portal.
+The objective of this CTF challenge is to enhance your practical skills in identifying and exploiting session hijacking vulnerabilities. You will use your login credentials to attempt to detect and exploit potential session hijacking issues on the ICDFA portal.
 
 ---
 
@@ -20,7 +20,7 @@ The objective of this CTF challenge is to enhance your practical skills in ident
    - **Research**: Start by reviewing concepts of session hijacking, focusing on how attackers exploit weaknesses in web session management. Understand the tools and methods commonly used to detect session-related vulnerabilities.
 
 **2. Test Setup**
-   - **Access**: Log in to the AIVTIC portal using your assigned credentials.
+   - **Access**: Log in to the ICDFA portal using your assigned credentials.
    - **Observation**: Use browser Developer Tools, Burp Suite, or OWASP ZAP to observe session cookies and their management in your browser.
 
 **3. Session Hijacking Attempt**
@@ -44,7 +44,7 @@ You are expected to submit a well-documented report in PDF format (maximum 5MB) 
    - Provide an overview of session hijacking, its potential impact on security, and the significance of protecting against such vulnerabilities.
 
 2. **Methodology**
-   - Describe the approach taken to test for session hijacking vulnerabilities on the AIVTIC portal.
+   - Describe the approach taken to test for session hijacking vulnerabilities on the ICDFA portal.
    - List any tools used during testing (e.g., Wireshark, Burp Suite, Developer Tools) and the environment setup.
 
 3. **Findings**
@@ -61,7 +61,7 @@ You are expected to submit a well-documented report in PDF format (maximum 5MB) 
 
 ### **Important Notes**
 
-- **Ethics & Authorization**: This challenge is for educational purposes only. You are permitted to perform these tests only on your own session within the AIVTIC portal. Attacking other users’ sessions without their consent violates ethical hacking principles.
+- **Ethics & Authorization**: This challenge is for educational purposes only. You are permitted to perform these tests only on your own session within the ICDFA portal. Attacking other users’ sessions without their consent violates ethical hacking principles.
   
 - **Professionalism**: Ensure your report is professional and well-structured, following the provided format. Points will be awarded for thoroughness, clarity, and adherence to ethical guidelines.
 
@@ -71,7 +71,7 @@ You are expected to submit a well-documented report in PDF format (maximum 5MB) 
 
 ### **Submission Guidelines**
 
-- Submit your report via the AIVTIC assignment portal. Title your PDF with your full name and student ID (e.g., JohnDoe_12345_SessionHijackingCTF.pdf).
+- Submit your report via the ICDFA assignment portal. Title your PDF with your full name and student ID (e.g., JohnDoe_12345_SessionHijackingCTF.pdf).
 - Ensure your file does not exceed 5MB and contains all relevant screenshots and documentation.
 
 ---
