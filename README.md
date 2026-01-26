@@ -153,7 +153,7 @@ This course focuses on the principles and practices of network security, includi
 
 | **Lab Number** | **Description Name**                                                                          | **Status**         |
 | -------------- | --------------------------------------------------------------------------------------------- | ------------------ |
-| Lab 1          | [Introduction to Network Security and Protocols](INT304/lab1.md)              | Mandatory          |
+| Lab 1          | [Applied Network Security Analysis](INT304/lab1.md)              | Mandatory          |
 | Lab 2          | [Hands-On with Firewall Configurations and Access Control Lists](INT304/lab2.md) | Mandatory          |
 
 ---
