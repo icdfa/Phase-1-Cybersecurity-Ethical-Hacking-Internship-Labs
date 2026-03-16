@@ -43,8 +43,26 @@ pip3 install cryptography pycryptodome
 The Caesar cipher is a **monoalphabetic substitution cipher** where each letter is shifted by a fixed number.
 
 **Mathematical Representation:**
-- **Encryption:** \( E(x) = (x + k) \mod 26 \)
-- **Decryption:** \( D(x) = (x - k) \mod 26 \)
+- **Encryption:** `E(x) = (x + k) mod 26`
+- **Decryption:** `D(x) = (x - k) mod 26`
+
+#### **Solved Example: Caesar Cipher Decryption**
+**Problem:** Decrypt the ciphertext `KHOOR` with a shift of `k = 3`.
+
+**Solution:**
+1.  **Convert letters to numbers (A=0, B=1, ..., Z=25):**
+    - K=10, H=7, O=14, O=14, R=17
+2.  **Apply decryption formula `D(x) = (x - 3) mod 26`:**
+    - (10 - 3) mod 26 = 7 (H)
+    - (7 - 3) mod 26 = 4 (E)
+    - (14 - 3) mod 26 = 11 (L)
+    - (14 - 3) mod 26 = 11 (L)
+    - (17 - 3) mod 26 = 14 (O)
+3.  **Result:** `HELLO`
+
+#### **Exercises**
+1.  **Manual Decryption:** Decrypt the ciphertext `WTAAD` using a shift of `k = 15`.
+2.  **Brute Force:** You intercept the ciphertext `XAB`. Try all 25 possible shifts to find the English word.
 
 #### **2.2 The Vigenère Cipher**
 The Vigenère cipher is a **polyalphabetic substitution cipher** that uses a keyword to determine the shift for each letter.
@@ -53,30 +71,26 @@ The Vigenère cipher is a **polyalphabetic substitution cipher** that uses a key
 **Problem:** Decrypt the ciphertext `RIJVS` using the key `KEY`.
 
 **Solution:**
-1.  **Repeat the key:** `KEYKE`
+1.  **Repeat the key to match ciphertext length:** `KEYKE`
 2.  **Align ciphertext and key:**
     ```
     Ciphertext: R I J V S
     Key:        K E Y K E
     ```
 3.  **Convert letters to numbers (A=0, B=1, ..., Z=25):**
-    ```
-    Ciphertext: 17 8 9 21 18
-    Key:        10 4 24 10 4
-    ```
-4.  **Decrypt using the formula P = (C - K) mod 26:**
-    -   R (17) - K (10) = 7 (H)
-    -   I (8) - E (4) = 4 (E)
-    -   J (9) - Y (24) = -15 mod 26 = 11 (L)
-    -   V (21) - K (10) = 11 (L)
-    -   S (18) - E (4) = 14 (O)
-
-**Plaintext:** `HELLO`
+    - Ciphertext: 17, 8, 9, 21, 18
+    - Key: 10, 4, 24, 10, 4
+4.  **Decrypt using `P = (C - K) mod 26`:**
+    - (17 - 10) mod 26 = 7 (H)
+    - (8 - 4) mod 26 = 4 (E)
+    - (9 - 24) mod 26 = -15 mod 26 = 11 (L)
+    - (21 - 10) mod 26 = 11 (L)
+    - (18 - 4) mod 26 = 14 (O)
+5.  **Result:** `HELLO`
 
 #### **Exercises**
-1. **Manual Decryption:** Decrypt the following Vigenère ciphertext using the key `KEY`: `RIJVS`.
-2. **Cryptanalysis:** Use frequency analysis to attempt to break a Caesar cipher with an unknown shift.
-3. **Python Implementation:** Write a Python script that can encrypt and decrypt messages using the Vigenère cipher.
+1.  **Manual Decryption:** Decrypt the ciphertext `LXFOPVEFRNHR` using the key `LEMON`.
+2.  **Python Implementation:** Write a Python script that takes a ciphertext and a key as input and returns the decrypted Vigenère plaintext.
 
 ---
 
@@ -99,17 +113,18 @@ AES is the global standard for symmetric encryption. It supports key lengths of 
     ```
 2.  **Encrypt the file:**
     ```bash
-    openssl enc -aes-256-cbc -salt -in secret.txt -out encrypted.bin -pass pass:mysecretpassword
+    openssl enc -aes-256-cbc -salt -in secret.txt -out encrypted.bin -k mypassword
     ```
 3.  **Decrypt the file:**
     ```bash
-    openssl enc -d -aes-256-cbc -in encrypted.bin -out decrypted.txt -pass pass:mysecretpassword
+    openssl enc -d -aes-256-cbc -in encrypted.bin -out decrypted.txt -k mypassword
     ```
+4.  **Verify:** `cat decrypted.txt`
 
 #### **Exercises**
-1. **OpenSSL Encryption:** Use OpenSSL to encrypt a file using AES-256-CBC.
-2. **The ECB Vulnerability:** Encrypt a bitmap image (.bmp) using AES-ECB and AES-CBC. Observe why ECB is insecure for structured data.
-3. **Python AES:** Implement a script using the `cryptography` library to encrypt a string using AES-GCM.
+1.  **OpenSSL Encryption:** Use OpenSSL to encrypt a file using `AES-128-CBC`. What happens if you use the wrong password during decryption?
+2.  **The ECB Vulnerability:** Download a `.bmp` image. Encrypt it using `AES-256-ECB` and `AES-256-CBC`. Compare the two encrypted images. Why can you still see the pattern in the ECB version?
+3.  **Python AES-GCM:** Use the `cryptography` library to encrypt the string "Authenticated Data" using AES-GCM. Ensure you include an Initialization Vector (IV) and an Authentication Tag.
 
 ---
 
@@ -126,12 +141,15 @@ A hash function takes an input and produces a fixed-size string (digest). It mus
     ```bash
     sha256sum document.pdf
     ```
-2.  **Compare the calculated checksum with the provided checksum.** If they match, the file's integrity is verified.
+2.  **Compare the output** with the checksum provided on the download page. If they match, the file is untampered.
 
 #### **Exercises**
-1. **File Integrity:** Download a file and verify its SHA-256 checksum against the provided value.
-2. **HMAC Generation:** Use OpenSSL to generate an HMAC-SHA256 for a message.
-3. **Password Security:** Write a Python script that hashes a password using `bcrypt` with a salt.
+1.  **Hash Collision Research:** Research the MD5 collision attack. Find two different files that produce the same MD5 hash.
+2.  **HMAC Generation:** Use OpenSSL to generate an HMAC-SHA256 for the message "Transaction: $100" using the secret key "bank-secret".
+    ```bash
+    echo -n "Transaction: $100" | openssl dgst -sha256 -hmac "bank-secret"
+    ```
+3.  **Password Security:** Write a Python script that uses `bcrypt` to hash a user's password. Include a salt and verify the password later.
 
 ---
 
@@ -154,9 +172,16 @@ RSA relies on the mathematical difficulty of factoring large prime numbers. It u
     ```
 
 #### **Exercises**
-1. **RSA Key Generation:** Generate a 2048-bit RSA key pair using OpenSSL.
-2. **Manual RSA:** Given \( p=3, q=11 \), calculate \( n, \phi(n) \), and find a valid \( e \) and \( d \).
-3. **Python RSA:** Use the `cryptography` library to encrypt a message with a public key and decrypt it with a private key using OAEP padding.
+1.  **Manual RSA Calculation:** Given `p = 3` and `q = 11`:
+    - Calculate `n = p * q`.
+    - Calculate `phi(n) = (p-1) * (q-1)`.
+    - Choose `e = 3`. Find `d` such that `(e * d) mod phi(n) = 1`.
+    - Encrypt the message `M = 5` using `C = M^e mod n`.
+    - Decrypt `C` using `M = C^d mod n`.
+2.  **Python RSA Encryption:** Use the `cryptography` library to:
+    - Generate an RSA key pair.
+    - Encrypt the message "Top Secret" using the public key with OAEP padding.
+    - Decrypt it using the private key.
 
 ---
 
@@ -169,19 +194,23 @@ A digital signature provides **Authentication** and **Non-repudiation**. The sen
 **Problem:** Sign a message `hello.txt` using a previously generated RSA private key and then verify the signature.
 
 **Solution:**
-1.  **Sign the message:**
+1.  **Create the message:** `echo "Hello World" > hello.txt`
+2.  **Sign the message:**
     ```bash
     openssl dgst -sha256 -sign private.pem -out signature.bin hello.txt
     ```
-2.  **Verify the signature:**
+3.  **Verify the signature:**
     ```bash
     openssl dgst -sha256 -verify public.pem -signature signature.bin hello.txt
     ```
 
 #### **Exercises**
-1. **Signing and Verifying:** Sign a text file using your RSA private key and verify it using the public key.
-2. **Self-Signed Certificate:** Create a self-signed X.509 certificate for a web server.
-3. **Trust Chain Analysis:** Inspect the certificate chain of `google.com` using your browser or OpenSSL.
+1.  **Tamper Detection:** Sign a file, then modify one character in the file. Try to verify the signature again. What is the result?
+2.  **Self-Signed Certificate:** Create a self-signed X.509 certificate for the domain `mysite.local` valid for 365 days.
+    ```bash
+    openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=mysite.local"
+    ```
+3.  **Trust Chain Analysis:** Use `openssl s_client -connect google.com:443 -showcerts` to view the certificate chain. Identify the Root CA and the Intermediate CA.
 
 ---
 
@@ -194,13 +223,19 @@ The protocol behind HTTPS. It combines symmetric encryption, asymmetric encrypti
 **Problem:** Identify the key messages in a TLS handshake using Wireshark.
 
 **Solution:**
-1.  **Open Wireshark** and start capturing on your active interface.
-2.  **Browse to an HTTPS website** (e.g., `https://www.example.com`).
-3.  **Filter for `tls`** and look for `Client Hello`, `Server Hello`, and `Certificate` messages.
+1.  **Start Wireshark** capture on your network interface.
+2.  **Run:** `curl https://www.google.com`
+3.  **Filter by `tls`** in Wireshark.
+4.  **Find:** `Client Hello`, `Server Hello`, `Certificate`, and `Finished` messages.
 
 #### **Exercises**
-1. **Wireshark Analysis:** Capture a TLS handshake in Wireshark and identify the "Client Hello" and "Server Hello" messages.
-2. **GPG Encryption:** Use GnuPG to encrypt a file for a specific recipient's public key.
+1.  **Cipher Suite Inspection:** Use `nmap --script ssl-enum-ciphers -p 443 google.com` to list the supported cipher suites. Which ones are considered "weak"?
+2.  **GPG File Encryption:** Generate a GPG key pair. Encrypt a file for yourself and then decrypt it.
+    ```bash
+    gpg --full-generate-key
+    gpg --encrypt --recipient "Your Name" secret.txt
+    gpg --decrypt secret.txt.gpg
+    ```
 
 ---
 
@@ -213,14 +248,11 @@ A padding oracle attack is an attack which uses the padding of a cryptographic m
 **Problem:** Explain how a padding oracle can be used to decrypt a block of ciphertext.
 
 **Solution:**
-If a server reveals whether a decrypted ciphertext has valid padding, an attacker can systematically modify the ciphertext and observe the server's response. By doing this, the attacker can deduce the plaintext byte by byte without knowing the key.
-
-#### **8.2 Hash Length Extension Attacks**
-This attack allows an attacker to use `Hash(message1)` to calculate `Hash(message1 || message2)` without knowing `message1`.
+If a server reveals whether a decrypted ciphertext has valid PKCS#7 padding, an attacker can modify the last byte of the previous ciphertext block. By iterating through all 256 values, the attacker finds the one that results in valid padding (usually `0x01`). This reveals the last byte of the plaintext.
 
 #### **Exercises**
-1. **Padding Oracle Challenge:** Research the "Padding Oracle" attack and explain how it can be used to decrypt CBC-mode ciphertext.
-2. **Length Extension Challenge:** Use a tool like `hashpump` to perform a length extension attack on a simulated vulnerable application.
+1.  **Padding Oracle Simulation:** Research the "Padding Oracle" attack. Use a tool like `padbuster` against a simulated vulnerable web application to decrypt a session cookie.
+2.  **Hash Length Extension:** Use `hashpump` to perform a length extension attack. Given `Hash(secret + "user=admin")`, generate a valid hash for `secret + "user=admin&append=true"` without knowing the `secret`.
 
 ---
 
@@ -233,8 +265,8 @@ Allows computations to be performed on encrypted data without first decrypting i
 Allows one party to prove to another that they know a value, without conveying any information apart from the fact that they know the value.
 
 #### **Exercises**
-1. **ZKP Research:** Research the "Ali Baba Cave" analogy and explain the concept of ZKP in your own words.
-2. **Homomorphic Encryption Exploration:** Research the difference between Partially Homomorphic Encryption (PHE) and Fully Homomorphic Encryption (FHE).
+1.  **ZKP Research:** Explain the "Ali Baba Cave" analogy for Zero-Knowledge Proofs. How does it prove knowledge without revealing the secret?
+2.  **Post-Quantum Cryptography (PQC):** Research the NIST PQC competition. Name three algorithms that are currently being standardized to replace RSA and ECC.
 
 ---
 
@@ -243,10 +275,13 @@ Allows one party to prove to another that they know a value, without conveying a
 **Scenario:** You are a security engineer at a global bank. You must design a secure communication system for high-value transactions.
 
 **Task:**
-1. **Key Management:** Design a system to securely store and rotate RSA-4096 keys.
-2. **Secure Channel:** Implement a Python script that simulates a TLS-like handshake.
-3. **Audit Trail:** Every transaction must be hashed using SHA-3 and digitally signed.
-4. **Quantum Readiness:** Propose a plan to migrate the bank's infrastructure to Post-Quantum Cryptography.
+1.  **Key Management:** Design a system to securely store and rotate RSA-4096 keys.
+2.  **Secure Channel:** Implement a Python script that simulates a TLS-like handshake:
+    - Exchange public keys.
+    - Establish a shared AES-256 session key using Diffie-Hellman.
+    - Encrypt a "Transaction" message using the session key.
+3.  **Audit Trail:** Every transaction must be hashed using SHA-3 and digitally signed.
+4.  **Quantum Readiness:** Propose a plan to migrate the bank's infrastructure to Post-Quantum Cryptography.
 
 ---
 
