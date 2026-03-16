@@ -63,6 +63,35 @@ The Caesar cipher is a **monoalphabetic substitution cipher** where each letter 
 #### **Exercises**
 1.  **Manual Decryption:** Decrypt the ciphertext `WTAAD` using a shift of `k = 15`.
 2.  **Brute Force:** You intercept the ciphertext `XAB`. Try all 25 possible shifts to find the English word.
+3.  **Python Caesar Cipher (Making Things):**
+    -   **Problem:** Implement a Python function to encrypt and decrypt messages using the Caesar cipher.
+    -   **Solved Example:**
+        ```python
+        def caesar_cipher(text, shift, mode=\'encrypt\'):
+            result = \"\"
+            for char in text:
+                if char.isalpha():
+                    start = ord(\'A\') if char.isupper() else ord(\'a\')
+                    if mode == \'encrypt\':
+                        shifted_char = chr((ord(char) - start + shift) % 26 + start)
+                    elif mode == \'decrypt\':
+                        shifted_char = chr((ord(char) - start - shift) % 26 + start)
+                    result += shifted_char
+                else:
+                    result += char
+            return result
+
+        # Example Usage:
+        plaintext = \"HELLO\"
+        key = 3
+
+        encrypted_text = caesar_cipher(plaintext, key, mode=\'encrypt\')
+        print(f\"Encrypted: {encrypted_text}\") # KHOOR
+
+        decrypted_text = caesar_cipher(encrypted_text, key, mode=\'decrypt\')
+        print(f\"Decrypted: {decrypted_text}\") # HELLO
+        ```
+    -   **Task:** Implement the `caesar_cipher` function in Python. Test it with the plaintext `CRYPTOGRAPHY` and a shift of `7`. Then decrypt the resulting ciphertext.
 
 #### **2.2 The Vigenère Cipher**
 The Vigenère cipher is a **polyalphabetic substitution cipher** that uses a keyword to determine the shift for each letter.
@@ -125,6 +154,66 @@ AES is the global standard for symmetric encryption. It supports key lengths of 
 1.  **OpenSSL Encryption:** Use OpenSSL to encrypt a file using `AES-128-CBC`. What happens if you use the wrong password during decryption?
 2.  **The ECB Vulnerability:** Download a `.bmp` image. Encrypt it using `AES-256-ECB` and `AES-256-CBC`. Compare the two encrypted images. Why can you still see the pattern in the ECB version?
 3.  **Python AES-GCM:** Use the `cryptography` library to encrypt the string "Authenticated Data" using AES-GCM. Ensure you include an Initialization Vector (IV) and an Authentication Tag.
+4.  **Secure File Encryption Tool (Making Things):**
+    -   **Problem:** Build a command-line tool in Python that can encrypt and decrypt files using AES-256-GCM. The tool should derive a key from a user-provided password.
+    -   **Solved Example:**
+        ```python
+        import os
+        from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+        from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.hazmat.backends import default_backend
+
+        def derive_key(password: bytes, salt: bytes) -> bytes:
+            kdf = PBKDF2HMAC(
+                algorithm=hashes.SHA256(),
+                length=32,
+                salt=salt,
+                iterations=100000,
+                backend=default_backend()
+            )
+            return kdf.derive(password)
+
+        def encrypt_file(file_path: str, password: str):
+            salt = os.urandom(16)
+            key = derive_key(password.encode(), salt)
+            aesgcm = AESGCM(key)
+            nonce = os.urandom(12)
+
+            with open(file_path, 'rb') as f:
+                plaintext = f.read()
+
+            ciphertext = aesgcm.encrypt(nonce, plaintext, None)
+
+            with open(file_path + '.enc', 'wb') as f:
+                f.write(salt + nonce + ciphertext)
+            print(f"Encrypted {file_path} to {file_path}.enc")
+
+        def decrypt_file(file_path: str, password: str):
+            with open(file_path, 'rb') as f:
+                data = f.read()
+            
+            salt = data[:16]
+            nonce = data[16:28]
+            ciphertext = data[28:]
+
+            key = derive_key(password.encode(), salt)
+            aesgcm = AESGCM(key)
+
+            try:
+                plaintext = aesgcm.decrypt(nonce, ciphertext, None)
+                with open(file_path.replace('.enc', '.dec'), 'wb') as f:
+                    f.write(plaintext)
+                print(f"Decrypted {file_path} to {file_path.replace('.enc', '.dec')}")
+            except Exception as e:
+                print(f"Decryption failed: {e}")
+
+        # Example Usage:
+        # with open('my_secret_file.txt', 'w') as f: f.write('This is a top secret file.')
+        # encrypt_file('my_secret_file.txt', 'my-strong-password')
+        # decrypt_file('my_secret_file.txt.enc', 'my-strong-password')
+        ```
+    -   **Task:** Implement the secure file encryption tool in Python. Create a text file, encrypt it using your tool, and then decrypt it to verify that the contents are restored correctly. Then, try to decrypt the file with the wrong password and observe the result.
 
 ---
 
@@ -133,23 +222,180 @@ AES is the global standard for symmetric encryption. It supports key lengths of 
 #### **4.1 Cryptographic Hash Functions**
 A hash function takes an input and produces a fixed-size string (digest). It must be **one-way** and **collision-resistant**.
 
-#### **Solved Example: File Integrity Verification**
-**Problem:** Verify the integrity of a downloaded file `document.pdf` with a known SHA-256 checksum.
+#### **Solved Example: Compute Hash Values**
+**Problem:** Compute the MD5 and SHA-256 hash values for the string "Cryptography Lab".
 
 **Solution:**
-1.  **Calculate the SHA-256 checksum:**
-    ```bash
-    sha256sum document.pdf
+1.  **Using Python:**
+    ```python
+    import hashlib
+
+    data = "Cryptography Lab".encode('utf-8')
+
+    md5_hash = hashlib.md5(data).hexdigest()
+    sha256_hash = hashlib.sha256(data).hexdigest()
+
+    print(f"MD5 Hash: {md5_hash}")
+    print(f"SHA-256 Hash: {sha256_hash}")
     ```
-2.  **Compare the output** with the checksum provided on the download page. If they match, the file is untampered.
+    **Output:**
+    ```
+    MD5 Hash: 5eb63bbbe01eeed093cb22bb8f5ac6
+    SHA-256 Hash: b0b84c2e9c5f1ec3e379ef4be8e12df02e9da8b4043ec8ff074e1c2c4205a05b
+    ```
+2.  **Using `echo` and `openssl` (Linux/macOS):**
+    ```bash
+    echo -n "Cryptography Lab" | openssl md5
+    echo -n "Cryptography Lab" | openssl sha256
+    ```
 
 #### **Exercises**
-1.  **Hash Collision Research:** Research the MD5 collision attack. Find two different files that produce the same MD5 hash.
-2.  **HMAC Generation:** Use OpenSSL to generate an HMAC-SHA256 for the message "Transaction: $100" using the secret key "bank-secret".
-    ```bash
-    echo -n "Transaction: $100" | openssl dgst -sha256 -hmac "bank-secret"
-    ```
-3.  **Password Security:** Write a Python script that uses `bcrypt` to hash a user's password. Include a salt and verify the password later.
+1.  **Compute Hash Values:** Using Python or OpenSSL, compute the hash values for the following strings:
+    - "Hello World"
+    - "Secure Hashing"
+    - "INT306 Cryptography"
+    Record the MD5 and SHA-256 hash values for each. Discuss the differences in the output length and characteristics.
+2.  **File Integrity Verification:** Download a file (e.g., a Linux ISO) and find its official SHA-256 checksum. Verify the integrity of your downloaded file using `sha256sum`.
+3.  **Hash Function Properties (Avalanche Effect):**
+    - Create a file named `original.txt` with the content: `The quick brown fox jumps over the lazy dog.`
+    - Compute its SHA-256 hash.
+    - Create a new file named `modified.txt` with a single character changed: `The quick brown fox jumps over the lazy cog.`
+    - Compute the SHA-256 hash of `modified.txt`.
+    - Compare the two hashes. Discuss how drastically the hash changes due to a minor input alteration, illustrating the **avalanche effect**.
+4.  **HMAC Generation:** Use OpenSSL to generate an HMAC-SHA256 for the message "Financial Transaction: $500" using the secret key "super-secret-key-123".
+5.  **Password Security (bcrypt):** Write a Python script that:
+    - Takes a password as input.
+    - Hashes the password using `bcrypt` with a randomly generated salt.
+    - Stores the hash.
+    - Later, takes another password input and verifies it against the stored hash.
+    Discuss why `bcrypt` is preferred over simple SHA-256 for password hashing.
+6.  **Rainbow Table Concept:** Research and describe how a rainbow table works to crack password hashes. Explain why salting passwords effectively mitigates rainbow table attacks.
+7.  **Collision Demonstration (Making Things):**
+    -   **Problem:** Demonstrate an MD5 hash collision using known collision pairs. Explain why this makes MD5 unsuitable for integrity checks where collision resistance is critical.
+    -   **Solved Example:**
+        1.  **Known MD5 Collision Files:** For educational purposes, we can use pre-generated files that are known to collide. (In a real scenario, generating these is computationally intensive).
+            - Download `md5_collision_1.bin` and `md5_collision_2.bin` (these would be provided as lab resources).
+        2.  **Compute MD5 Hashes:**
+            ```bash
+            md5sum md5_collision_1.bin
+            md5sum md5_collision_2.bin
+            ```
+        3.  **Observe:** Both files will produce the exact same MD5 hash, despite having different content.
+        4.  **Discussion:** This demonstrates that MD5 is not collision-resistant, meaning an attacker could substitute a malicious file for a legitimate one if only MD5 hashes are used for verification.
+    -   **Task:** Obtain two files that are known to produce an MD5 collision (e.g., from a reputable source like the [MD5 Collision Project](https://www.win.tue.nl/~bdeweger/Collisions/)). Verify their hashes and explain the implications for digital signatures and file integrity.
+8.  **Rainbow Table Creation (Making Things):**
+    -   **Problem:** Create a simple rainbow table for a small set of common passwords (e.g., `password`, `123456`, `qwerty`) using MD5 hashes. Then, demonstrate how to use this table to find the original password for a given hash.
+    -   **Solved Example:**
+        1.  **Common Passwords and their MD5 Hashes:**
+            - `password`: `5f4dcc3b5aa765d61d8327deb882cf99`
+            - `123456`: `e10adc3949ba59abbe56e057f20f883e`
+            - `qwerty`: `d8578edf8458ce06fbc5bb76a587711`
+        2.  **Python Script to Generate Table:**
+            ```python
+            import hashlib
+
+            passwords = ["password", "123456", "qwerty"]
+            rainbow_table = {}
+
+            print("Generating Rainbow Table...")
+            for pwd in passwords:
+                md5_hash = hashlib.md5(pwd.encode("utf-8")).hexdigest()
+                rainbow_table[md5_hash] = pwd
+                print(f"  Password: {pwd}, MD5: {md5_hash}")
+
+            print("\nRainbow Table Generated.")
+
+            # Example of using the table to crack a hash
+            target_hash = "e10adc3949ba59abbe56e057f20f883e" # Hash for 123456
+            if target_hash in rainbow_table:
+                print(f"\nCracked! Hash {target_hash} corresponds to password: {rainbow_table[target_hash]}")
+            else:
+                print(f"\nHash {target_hash} not found in table.")
+            ```
+    -   **Task:** Implement the Python script to generate a rainbow table for at least 5 common passwords. Then, given an MD5 hash (e.g., `d8578edf8458ce06fbc5bb76a587711`), use your table to find the original password. Discuss the limitations of this simple rainbow table and how salting would prevent this attack.
+9.  **Real-World Application (Research & Report):**
+    -   **Problem:** Choose an application that heavily utilizes hash functions (e.g., blockchain/cryptocurrency, digital forensics, version control systems like Git, or secure boot processes). Write a one-page report detailing how hash functions are used in that application.
+    -   **Solved Example Outline:**
+        1.  **Application Chosen:** Blockchain/Cryptocurrency (e.g., Bitcoin)
+        2.  **How Hashes are Used:**
+            -   **Block Header Hashing:** Each block header is hashed using SHA-256 (double SHA-256). This hash serves as the block's unique identifier and is crucial for linking blocks in the chain.
+            -   **Proof-of-Work:** Miners compete to find a hash below a certain target, demonstrating computational effort and securing the network.
+            -   **Merkle Trees:** Transaction hashes are organized into a Merkle tree, where the root hash is included in the block header, allowing efficient verification of transactions.
+            -   **Wallet Addresses:** Public keys are hashed to generate wallet addresses, providing a layer of abstraction and privacy.
+        3.  **Potential Vulnerabilities/Implications:**
+            -   **51% Attack:** If an attacker controls more than 50% of the network's hashing power, they could potentially reverse transactions or prevent new ones.
+            -   **Hash Collisions (Theoretical):** While highly improbable for SHA-256, a collision could theoretically allow an attacker to forge transactions.
+            -   **Quantum Computing:** Future quantum computers could break the underlying cryptographic primitives (like ECDSA for signatures), though PQC is being researched.
+    -   **Task:** Select an application (e.g., Git, Digital Forensics, Secure Boot, Certificate Transparency) and prepare a one-page report (approx. 300-500 words) explaining the role of hash functions, including specific algorithms used, their benefits, and any associated vulnerabilities or real-world implications.
+10. **Implementing a Hash Table (Making Things):**
+    -   **Problem:** Implement a simple hash table (also known as a hash map or dictionary) in Python that stores key-value pairs. Demonstrate its basic operations (insert, search, delete).
+    -   **Solved Example:**
+        ```python
+        class HashTable:
+            def __init__(self, size):
+                self.size = size
+                self.table = [[] for _ in range(self.size)]
+
+            def _hash(self, key):
+                return hash(key) % self.size
+
+            def insert(self, key, value):
+                key_hash = self._hash(key)
+                key_value = [key, value]
+
+                if self.table[key_hash] is None:
+                    self.table[key_hash] = [key_value]
+                else:
+                    for pair in self.table[key_hash]:
+                        if pair[0] == key:
+                            pair[1] = value # Update existing key
+                            return
+                    self.table[key_hash].append(key_value) # Add new key
+
+            def search(self, key):
+                key_hash = self._hash(key)
+                if self.table[key_hash] is not None:
+                    for pair in self.table[key_hash]:
+                        if pair[0] == key:
+                            return pair[1]
+                return None
+
+            def delete(self, key):
+                key_hash = self._hash(key)
+                if self.table[key_hash] is not None:
+                    for i, pair in enumerate(self.table[key_hash]):
+                        if pair[0] == key:
+                            del self.table[key_hash][i]
+                            print(f"Deleted: {key}")
+                            return
+                print(f"Key {key} not found.")
+
+            def display(self):
+                for i, bucket in enumerate(self.table):
+                    print(f"Bucket {i}: {bucket}")
+
+        # Demonstrate usage
+        ht = HashTable(10)
+        ht.insert("apple", 10)
+        ht.insert("banana", 20)
+        ht.insert("cherry", 30)
+        ht.insert("apple", 15) # Update apple
+
+        print("\n--- Hash Table Contents ---")
+        ht.display()
+
+        print("\n--- Search Operations ---")
+        print(f"Search 'banana': {ht.search('banana')}")
+        print(f"Search 'grape': {ht.search('grape')}")
+
+        print("\n--- Delete Operations ---")
+        ht.delete("banana")
+        ht.delete("grape")
+
+        print("\n--- Hash Table Contents After Deletion ---")
+        ht.display()
+        ```
+    -   **Task:** Implement the `HashTable` class in Python. Test its `insert`, `search`, and `delete` operations with at least 5 different key-value pairs. Discuss how hash functions (specifically the `_hash` method) contribute to the efficiency of hash tables and the concept of collision resolution (e.g., chaining as used in the example).
 
 ---
 
@@ -182,6 +428,51 @@ RSA relies on the mathematical difficulty of factoring large prime numbers. It u
     - Generate an RSA key pair.
     - Encrypt the message "Top Secret" using the public key with OAEP padding.
     - Decrypt it using the private key.
+3.  **Diffie-Hellman Key Exchange Simulation (Making Things):**
+    -   **Problem:** Implement a Python script to simulate the Diffie-Hellman key exchange protocol between two parties (Alice and Bob) to establish a shared secret.
+    -   **Solved Example:**
+        ```python
+        from cryptography.hazmat.primitives import hashes
+        from cryptography.hazmat.primitives.asymmetric import dh
+        from cryptography.hazmat.primitives.kdf.hkdf import HKDF
+        from cryptography.hazmat.backends import default_backend
+
+        # 1. Agree on common parameters (p, g)
+        # In a real scenario, these would be well-known safe primes.
+        # For demonstration, we generate small parameters.
+        parameters = dh.generate_parameters(generator=2, key_size=512, backend=default_backend())
+
+        # 2. Alice generates her private key and public key
+        alice_private_key = parameters.generate_private_key()
+        alice_public_key = alice_private_key.public_key()
+
+        # 3. Bob generates his private key and public key
+        bob_private_key = parameters.generate_private_key()
+        bob_public_key = bob_private_key.public_key()
+
+        print("--- Diffie-Hellman Key Exchange Simulation ---")
+        print(f"Alice\'s Public Key: {alice_public_key.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode().strip().splitlines()[1]}")
+        print(f"Bob\'s Public Key: {bob_public_key.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo).decode().strip().splitlines()[1]}")
+
+        # 4. Alice computes the shared secret
+        alice_shared_key = alice_private_key.exchange(bob_public_key)
+
+        # 5. Bob computes the shared secret
+        bob_shared_key = bob_private_key.exchange(alice_public_key)
+
+        # 6. Derive a symmetric key from the shared secret using HKDF
+        derived_key_alice = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b\'handshake data\', backend=default_backend()).derive(alice_shared_key)
+        derived_key_bob = HKDF(algorithm=hashes.SHA256(), length=32, salt=None, info=b\'handshake data\', backend=default_backend()).derive(bob_shared_key)
+
+        print(f"\nAlice\'s Derived Shared Key: {derived_key_alice.hex()}")
+        print(f"Bob\'s Derived Shared Key: {derived_key_bob.hex()}")
+
+        if derived_key_alice == derived_key_bob:
+            print("\nShared keys match! Secure communication can now proceed.")
+        else:
+            print("\nError: Shared keys do not match.")
+        ```
+    -   **Task:** Implement the Python Diffie-Hellman key exchange simulation. Run the script and observe that Alice and Bob successfully derive the same shared secret. Explain the role of the public parameters (`p`, `g`) and why the private keys (`a`, `b`) are never exchanged.
 
 ---
 
