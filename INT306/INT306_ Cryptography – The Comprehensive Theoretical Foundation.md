@@ -3,8 +3,8 @@
 
 **Author:** AMINU IDRIS, AMCPN  
 **Date:** March 16, 2026  
-**Program:** International Cybersecurity and Digital Forensics Foundation  
-**Fellowship:** Advanced Cryptography Fellowship (Max Slot: 50 Fellows)
+**Program:** International Cybersecurity and Digital Forensics Academy 
+
 
 ---
 
@@ -36,15 +36,17 @@ Modern cryptography is inseparable from advanced mathematics. To master the algo
 
 #### **2.1 Number Theory and Modular Arithmetic**
 Modular arithmetic, often described as "clock arithmetic," is the study of integers within a finite system.
-- **Congruence:** Two integers \( a \) and \( b \) are congruent modulo \( n \) (\( a \equiv b \pmod{n} \)) if their difference \( a - b \) is a multiple of \( n \).
-- **Modular Inverse:** For an integer \( a \), its modular inverse \( x \) satisfies \( ax \equiv 1 \pmod{n} \). This exists if and only if \( \text{gcd}(a, n) = 1 \).
-- **Euler's Totient Function (\( \phi(n) \)):** Counts the number of integers up to \( n \) that are relatively prime to \( n \). For a prime \( p \), \( \phi(p) = p - 1 \). For \( n = pq \), \( \phi(n) = (p-1)(q-1) \).
+- **Congruence:** Two integers `a` and `b` are congruent modulo `n` if their difference `a - b` is a multiple of `n`. This is expressed as: `a === b (mod n)`
+- **Modular Inverse:** For an integer `a`, its modular inverse `x` satisfies: `ax === 1 (mod n)`. This exists if and only if `gcd(a, n) = 1`.
+- **Euler's Totient Function (phi(n)):** Counts the number of integers up to `n` that are relatively prime to `n`.
+  - For a prime `p`: `phi(p) = p - 1`
+  - For `n = pq`, where `p` and `q` are distinct primes: `phi(n) = (p-1)(q-1)`
 
 #### **2.2 Complexity Theory and One-Way Functions**
 The security of most modern systems relies on **computational hardness**.
 - **One-Way Functions (OWF):** Functions that are easy to compute but computationally infeasible to invert without a "trapdoor" (secret key).
 - **The Factoring Problem:** The difficulty of finding the prime factors of a large composite number (basis for RSA).
-- **The Discrete Logarithm Problem (DLP):** Given \( g^x \equiv y \pmod{p} \), finding \( x \) is hard (basis for Diffie-Hellman and ECC).
+- **The Discrete Logarithm Problem (DLP):** Given the equation: `g^x === y (mod p)`, it is computationally difficult to find the exponent `x` when the other values are known. This is the basis for Diffie-Hellman and ECC.
 
 ---
 
@@ -87,12 +89,12 @@ Stream ciphers encrypt data bit-by-bit or byte-by-byte by XORing the plaintext w
 
 ### **5. Cryptographic Hash Functions: The Digital Fingerprint**
 
-A hash function \( H(M) \) maps a message of arbitrary length to a fixed-length digest.
+A hash function, denoted `H(M)`, maps a message `M` of arbitrary length to a fixed-length digest.
 
 #### **5.1 Essential Properties**
-1.  **Pre-image Resistance:** Hard to find \( M \) given \( H(M) \).
-2.  **Second Pre-image Resistance:** Hard to find \( M' \neq M \) such that \( H(M') = H(M) \).
-3.  **Collision Resistance:** Hard to find *any* two \( M_1, M_2 \) such that \( H(M_1) = H(M_2) \).
+1.  **Pre-image Resistance:** Given a hash digest `h`, it is computationally infeasible to find a message `M` such that `H(M) = h`.
+2.  **Second Pre-image Resistance:** Given a message `M1`, it is computationally infeasible to find a different message `M2` such that `H(M1) = H(M2)`.
+3.  **Collision Resistance:** It is computationally infeasible to find any two distinct messages `M1` and `M2` such that `H(M1) = H(M2)`.
 
 #### **5.2 Modern Algorithms**
 - **SHA-256:** Part of the SHA-2 family, widely used in Bitcoin and TLS.
@@ -106,12 +108,23 @@ Asymmetric cryptography uses a **Public Key** for encryption and a **Private Key
 
 #### **6.1 RSA (Rivest-Shamir-Adleman)**
 Security is based on the **Integer Factorization Problem**.
-- **Key Generation:** Choose two large primes \( p, q \). Compute \( n = pq \) and \( \phi(n) = (p-1)(q-1) \). Choose \( e \) such that \( \text{gcd}(e, \phi(n)) = 1 \). Compute \( d \equiv e^{-1} \pmod{\phi(n)} \).
-- **Public Key:** \( (n, e) \); **Private Key:** \( (n, d) \).
+- **Key Generation:**
+  1. Choose two large distinct prime numbers, `p` and `q`.
+  2. Compute the modulus: `n = pq`
+  3. Compute Euler's totient function: `phi(n) = (p-1)(q-1)`
+  4. Choose a public exponent `e` such that `1 < e < phi(n)` and `gcd(e, phi(n)) = 1`.
+  5. Compute the private exponent `d` as the modular multiplicative inverse of `e` modulo `phi(n)`: `d === e^-1 (mod phi(n))`
+- **Public Key:** The pair `(n, e)`.
+- **Private Key:** The pair `(n, d)`.
 
 #### **6.2 Diffie-Hellman (DH) Key Exchange**
 Allows two parties to establish a shared secret over an insecure channel.
-- **Process:** Alice and Bob agree on a prime \( p \) and generator \( g \). Alice sends \( g^a \pmod{p} \), Bob sends \( g^b \pmod{p} \). Both compute the shared secret \( g^{ab} \pmod{p} \).
+- **Process:**
+  1. Alice and Bob publicly agree on a large prime `p` and a generator `g`.
+  2. Alice chooses a secret integer `a`, computes `A = g^a (mod p)`, and sends `A` to Bob.
+  3. Bob chooses a secret integer `b`, computes `B = g^b (mod p)`, and sends `B` to Alice.
+  4. Alice computes the shared secret: `S = B^a (mod p) = (g^b)^a (mod p) = g^(ab) (mod p)`
+  5. Bob computes the shared secret: `S = A^b (mod p) = (g^a)^b (mod p) = g^(ab) (mod p)`
 
 #### **6.3 Elliptic Curve Cryptography (ECC)**
 ECC offers the same security as RSA but with significantly smaller keys.
@@ -123,8 +136,8 @@ ECC offers the same security as RSA but with significantly smaller keys.
 
 #### **7.1 Digital Signatures (RSA, ECDSA, EdDSA)**
 Provides **Authentication** and **Non-repudiation**.
-- **Signing:** \( S = \text{Sign}(H(M), \text{Private Key}) \).
-- **Verification:** \( \text{Verify}(S, M, \text{Public Key}) \).
+- **Signing:** The signature `S` is generated by encrypting the message hash `H(M)` with the sender's private key: `S = Encrypt(H(M), PrivateKey)`
+- **Verification:** The signature is verified by decrypting it with the sender's public key and comparing the result to a freshly computed hash of the message: `Decrypt(S, PublicKey) ?= H(M)`
 
 #### **7.2 HMAC (Hash-based MAC)**
 Combines a hash function with a secret key to provide **Integrity** and **Authenticity**. Unlike a simple hash, an HMAC prevents length-extension attacks.
@@ -188,4 +201,4 @@ Cryptography is a dynamic field where the "unbreakable" of today becomes the "in
 
 ---
 **Authored by AMINU IDRIS, AMCPN**  
-*International Cybersecurity and Digital Forensics Foundation*
+*International Cybersecurity and Digital Forensics Academy*
